@@ -12,6 +12,8 @@ export default function Enter(){
     const [boolean , setBoolean] = useState(false);
     const navigat = useNavigate()
 
+   
+
     function login(event){
         event.preventDefault();
         if(boolean) return 
@@ -24,11 +26,10 @@ export default function Enter(){
         
     }
     function sucess(value){
-        localStorage.clear();
         localStorage.setItem('linkr', JSON.stringify(value.data));
-        console.log(value.data)
         
         setUser(value.data);
+
         return navigat('/')
     }
     function err(value){
@@ -38,13 +39,12 @@ export default function Enter(){
     return(
 
         <Container>   
-            <Container width={'100%'} ><span><h2 >Entrar </h2>&nbsp;&nbsp;&nbsp;<h2 onClick={()=> navigat('/signup')} > Cadastrar-se</h2> </span></Container>
             <p> Linker </p>
             <form onSubmit={login} >      
                 <Input type={"email"} background={boolean} placeholder={"E-mail"} onChange={e => setLogindate({...loginDate, email: e.target.value })} required readOnly={boolean}/> 
                 <Input type={"password"} background={boolean} placeholder={"Senha"} onChange={e => setLogindate({...loginDate, password: e.target.value }) }  required readOnly={boolean}/>
                 <Button type={"submit"} width={"200px"} bolean={boolean} heigt={"50px"} > Entrar </Button>
-                <Linkers to={"/signup"}> Primeira vez? Cadastre-se!</Linkers>
+                <Linkers to={"/signup"}> First time? Create an account!</Linkers>
             </form>
         </Container> 
     )

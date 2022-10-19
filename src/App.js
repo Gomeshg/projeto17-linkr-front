@@ -1,14 +1,24 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import UserContext from './parts/UserContext';
+import { useState } from "react";
+import {useEffect } from "react";
 import ResetStyled from './reset/reset';
 import styled from 'styled-components';
 import CreatCont from './CreatCont';
-import { useState } from "react";
 import Initial from './Initial';
 import Enter from './Enter';
 
 export default function App() {
     const [user, setUser] = useState([]); 
+    
+    useEffect( () => {
+        const token = JSON.parse(localStorage.getItem('linkr'))
+
+        if(token) console.log(token)
+
+    }, []);
+
+   
     return (
         <>
             <UserContext.Provider value={{ user, setUser }}>

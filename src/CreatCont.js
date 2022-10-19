@@ -31,7 +31,6 @@ export default function CreatCont() {
 
     return (
         <AllContainer>
-            <Container width={'100%'} ><span><h2 onClick={()=> navigat('/signin')} >Entrar </h2>&nbsp;&nbsp;&nbsp;<h2> Cadastrar-se</h2> </span></Container>
             <p> Shortly <img src={''} /> </p>
             <form onSubmit={submitobj}>
                 <Input type={"email"} background={boolean} placeholder={"E-mail"} onChange={e => setPersonalDate({ ...personalDate, email: e.target.value })} readOnly={boolean} required="required" />
@@ -39,7 +38,7 @@ export default function CreatCont() {
                 <Input type={"text"} background={boolean} placeholder={"Username"} onChange={e => setPersonalDate({ ...personalDate, name: e.target.value })} readOnly={boolean} required="required" />
                 <Input type={"url"} background={boolean} placeholder={"Picture url"} onChange={e => setPersonalDate({ ...personalDate, pictureUrl: e.target.value })} readOnly={boolean} required="required"/>
                 <Button type={"submit"} width={"200px"} bolean={boolean} heigt={"50px"} > Sign Up  </Button> 
-                <Linkers to={"/signin"}> Já tem uma conta? Entre agora!</Linkers> 
+                <Linkers to={"/signin"}> Switch back to Log In</Linkers> 
             </form>
              
         </AllContainer>
