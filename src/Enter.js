@@ -14,12 +14,13 @@ export default function Enter(){
 
     function login(event){
         event.preventDefault();
+        if(boolean) return 
         setBoolean(!boolean)
         const obj= {
             email: loginDate.email,
             password: loginDate.password
         } 
-    postLogin(obj).catch(err).then(sucess);
+        postLogin(obj).catch(err).then(sucess);
         
     }
     function sucess(value){
