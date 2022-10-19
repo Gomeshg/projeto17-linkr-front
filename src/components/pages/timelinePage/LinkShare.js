@@ -15,5 +15,5 @@ const LinkShareStyle = styled.div`
     width: 600px;
     height: 200px;
     background-color: #ffffff;
-    margin-bottom: 10px;
+    margin-bottom: 13px;
 `;

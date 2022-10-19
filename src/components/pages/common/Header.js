@@ -8,7 +8,7 @@ export default function Header() {
         <HeaderStyle>
             <h1 className="linkrTitle" >linkr</h1>
             <div>
-                <SlArrowDown className="icons" />
+                <SlArrowDown className="icon" />
                 <img src={profileIcon} alt="idoso nervoso" className="profileIcon" ></img>
             </div>
         </HeaderStyle>
@@ -45,7 +45,7 @@ div {
     margin-right: 30px;
     border-radius: 50%;
 }
-.icons {
+.icon {
     height: 20px;
     color: #ffffff;
     margin-right: 10px;
