@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 // import urlMetaData from "url-metadata";
-import { useEffect } from "react";
 
 const objetoPTesteUsuario = {
     username: "Juvencio",
@@ -20,6 +19,7 @@ export default function TimelineLinks() {
             <div className="userIconNLikesColumn">
                 <img src={objetoPTesteUsuario.userPicture} alt="idoso nervoso" className="profileIcon" ></img>
                 <h3><AiOutlineHeart className="icon" /></h3>
+                {/* <h3><AiFillHeart className="icon" /></h3> */}
                 <h3 className="likes">{objetoPTesteLink.likes} likes</h3>
             </div>
 
