@@ -113,6 +113,16 @@ const Container = styled.div`
         flex-wrap: wrap;
     
     }
+
+    @media scren and(min-width:800px){
+        .form{
+            background-color: red ;
+            display: none ;
+        }
+
+    }
+
+
    
     
 
