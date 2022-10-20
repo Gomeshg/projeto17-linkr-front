@@ -48,16 +48,17 @@ const Butto = styled.button`
         align-items: center;
         cursor: pointer; 
         border-style: none;
+        font-family: 'Oswald';
         width: ${props=> props.width};
         height: ${props=> props.heigt};
-        background: #5d9040;
-        border-radius: 10px;
+        background: #1877F2;
+        border-radius: 5px;
         font-weight: 700;
-        font-size: 15px;
+        font-size: 21px;
         line-height: 26px;
         opacity: ${(props) => !props.bolean ? 1 : 0.5 };
         transition: background 50ms linear ;
-        margin: 20px;
+        margin: 5px;
         :active{
             background-color: ${props => '#' + Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, '0')} ;
             transform: translatey(4px);
@@ -72,16 +73,16 @@ function Linkers({...props}){
 }
 
 const Linke = styled.div`
-
+    margin: 10px ;
     width: 100Vw ;
     text-align: center ;
     a{
-    
-    text-decoration: none ;
-    font-weight: 700;
-    font-size: 15px;
-    line-height: 17px;
-    color: #000000 ;
+    font-family:'Lato' ;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF ;
+
     }
 `;
 
@@ -109,23 +110,24 @@ function Input({...others}){
 }
 const Inp = styled.input`
         cursor: pointer;
-        -webkit-box-shadow: ${(props) => !props.background ? "0 0 0 50px white inset" : "0 0 0 50px #749164 inset" }  ;
-        padding: 10px;
+        font-family: 'Oswald' ;
+        -webkit-box-shadow: ${(props) => !props.background ? "0 0 0 50px white inset" : "0 0 0 50px #79aff2 inset" }  ;
+        padding: 20px;
         width: 100%;
         border: 1px solid #D5D5D5;
-        border-radius: 10px;
+        border-radius: 5px;
         height: 58px;
         color:${(props) => !props.background ? "#000000" : "#D4D4D4" };
-        font-weight: 400;
-        line-height: 25px;
-        margin: 20px ;
+        font-weight: 700;
+        line-height: 27px;
+        margin: 5px ;
         ::placeholder{
         font-style: normal;
         font-weight: 400;
         font-size: 15px;
         line-height: 25px;
         color: #000000 ;
-        opacity: 1;
+        opacity: 0.5;
         }
         :focus, select:focus {
         

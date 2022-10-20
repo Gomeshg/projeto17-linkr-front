@@ -1,85 +1,130 @@
-import {Button , Input, Linkers} from "./parts/Subparts";
+import { Button, Input, Linkers } from "./parts/Subparts";
 import { useNavigate } from "react-router-dom";
 import UserContext from './parts/UserContext';
-import { useState, useContext } from "react";
-import { postLogin } from "./parts/linker";
+import { useState, useContext, useEffect } from "react";
+import { postLogin, getUserValidation } from "./parts/linker";
 import styled from "styled-components";
 
 
-export default function Enter(){
-    const {user ,setUser} = useContext(UserContext);
-    const [loginDate , setLogindate] = useState({});
-    const [boolean , setBoolean] = useState(false);
+export default function Enter() {
+    const { user, setUser } = useContext(UserContext);
+    const [loginDate, setLogindate] = useState({});
+    const [boolean, setBoolean] = useState(false);
     const navigat = useNavigate()
 
-   
+    useEffect(() => {
+        const token = JSON.parse(localStorage.getItem('linkr'))
 
-    function login(event){
+        if (token) getUserValidation(token.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') })
+
+    }, []);
+
+    function login(event) {
         event.preventDefault();
-        if(boolean) return 
+        if (boolean) return
         setBoolean(!boolean)
-        const obj= {
+        const obj = {
             email: loginDate.email,
             password: loginDate.password
-        } 
+        }
         postLogin(obj).catch(err).then(sucess);
-        
+
     }
-    function sucess(value){
+    function sucess(value) {
         localStorage.setItem('linkr', JSON.stringify(value.data));
-        
         setUser(value.data);
+        getUserValidation(value.data.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') }).catch(err)
 
-        return navigat('/')
     }
-    function err(value){
+    function err(value) {
         setBoolean(boolean);
-        return alert(value);
+        return alert(value.response.statusText);
     }
-    return(
+    return (
 
-        <Container>   
-            <p> Linker </p>
-            <form onSubmit={login} >      
-                <Input type={"email"} background={boolean} placeholder={"E-mail"} onChange={e => setLogindate({...loginDate, email: e.target.value })} required readOnly={boolean}/> 
-                <Input type={"password"} background={boolean} placeholder={"Senha"} onChange={e => setLogindate({...loginDate, password: e.target.value }) }  required readOnly={boolean}/>
-                <Button type={"submit"} width={"200px"} bolean={boolean} heigt={"50px"} > Entrar </Button>
+        <Container>
+            <p>
+                <h1>
+                    linkr
+                    <h2>save, share and discover<br /> the best links on the web</h2>
+                </h1>
+            </p>
+
+
+            <form onSubmit={login} >
+                <Input type={"email"} background={boolean} placeholder={"e-mail"} onChange={e => setLogindate({ ...loginDate, email: e.target.value })} required readOnly={boolean} />
+                <Input type={"password"} background={boolean} placeholder={"passoword"} onChange={e => setLogindate({ ...loginDate, password: e.target.value })} required readOnly={boolean} />
+                <Button type={"submit"} width={"100%"} bolean={boolean} heigt={"50px"} > Log In </Button>
                 <Linkers to={"/signup"}> First time? Create an account!</Linkers>
             </form>
-        </Container> 
+        </Container>
     )
 
 }
 
 const Container = styled.div`
-    padding: 20px ;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    h1{
+
+        font-family: 'Passion One';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 106px;
+        line-height: 117px;
+        letter-spacing: 0.05em;
+        color: #FFFFFF;
+        width: 80% ;
+    }
+    
+    h2{
+        font-family: 'Oswald';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 43px;
+        line-height: 64px;
+        color: #FFFFFF;
+
+
+    }
+
+    p{
+        display: flex ;
+        align-items: center ;
+        justify-content: center ;
+        background-color: #151515 ;
+        height: 100% ;
+        width:70% ;
+
+    }
+
+    
     
     form{
+        padding: 20px ;
         margin-top: 15px;
-        width: 80%;
+        width: 30%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
     
     }
-    span{
-    width: 100% ;
-    display:flex ;
-    justify-content: flex-end ;
-}
-    p{
-        font-size: 64px ;
-        color: #000000;
-        display: flex;
-        align-items: center;
-}
 
+    @media scren and(min-width:800px){
+        .form{
+            background-color: red ;
+            display: none ;
+        }
+
+    }
+
+
+   
+    
 
     `;
 
