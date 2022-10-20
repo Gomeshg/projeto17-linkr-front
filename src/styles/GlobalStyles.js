@@ -6,7 +6,6 @@ font-family: 'Lato', sans-serif;
 font-family: 'Oswald', sans-serif;
 font-family: 'Passion One', cursive;
  */
-
 .pageTitle {
     width: 925px;
     height: 160px;

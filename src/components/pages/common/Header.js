@@ -24,9 +24,9 @@ const HeaderStyle = styled.div`
     align-items: center;
     justify-content: space-between;
     position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-
 div {
     display: flex;
     align-items: center;

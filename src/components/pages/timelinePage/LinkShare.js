@@ -90,6 +90,7 @@ const LinkShareStyle = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
     color: #707070;
+    word-break: break-all;
 
     width: 600px;
     height: 200px;
@@ -99,6 +100,9 @@ const LinkShareStyle = styled.div`
 
     display:flex;
     margin-top: 16px;
+    @media screen and (max-width: 900px) {
+        width: 100%;
+    }
 .profileIcon {
     height: 50px;
     width: 50px;
