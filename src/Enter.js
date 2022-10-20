@@ -1,4 +1,4 @@
-import {Button , Input, Linkers} from "./parts/Subparts";
+import { Button, Input, Linkers } from "./parts/Subparts";
 import { useNavigate } from "react-router-dom";
 import UserContext from './parts/UserContext';
 import { useState, useContext, useEffect } from "react";
@@ -6,63 +6,60 @@ import { postLogin, getUserValidation } from "./parts/linker";
 import styled from "styled-components";
 
 
-export default function Enter(){
-    const {user ,setUser} = useContext(UserContext);
-    const [loginDate , setLogindate] = useState({});
-    const [boolean , setBoolean] = useState(false);
+export default function Enter() {
+    const { user, setUser } = useContext(UserContext);
+    const [loginDate, setLogindate] = useState({});
+    const [boolean, setBoolean] = useState(false);
     const navigat = useNavigate()
 
-    useEffect( () => {
+    useEffect(() => {
         const token = JSON.parse(localStorage.getItem('linkr'))
 
-        if(token) getUserValidation(token.token).then((value)=>{setUser({...user, ...value.data}); navigat('/timeline') })
+        if (token) getUserValidation(token.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') })
 
     }, []);
 
-
-
-   
-
-    function login(event){
+    function login(event) {
         event.preventDefault();
-        if(boolean) return 
+        if (boolean) return
         setBoolean(!boolean)
-        const obj= {
+        const obj = {
             email: loginDate.email,
             password: loginDate.password
-        } 
+        }
         postLogin(obj).catch(err).then(sucess);
-        
+
     }
-    function sucess(value){
+    function sucess(value) {
         localStorage.setItem('linkr', JSON.stringify(value.data));
         setUser(value.data);
         console.log(value.data)
-        getUserValidation(value.data.token).then((value)=>{setUser({...user, ...value.data}); navigat('/timeline') }).catch(err)
-        
+        getUserValidation(value.data.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') }).catch(err)
+
     }
-    function err(value){
+    function err(value) {
         setBoolean(boolean);
+        console.log(value)
         return alert(value);
     }
-    return(
+    return (
 
-        <Container>   
-            <p> 
+        <Container>
+            <p>
                 <h1>
                     linkr
-                    <h2>save, share and discover<br/> the best links on the web</h2>    
+                    <h2>save, share and discover<br /> the best links on the web</h2>
                 </h1>
             </p>
-            
-            
-            <form onSubmit={login} >      
-                <Input type={"email"} background={boolean} placeholder={"e-mail"} onChange={e => setLogindate({...loginDate, email: e.target.value })} required readOnly={boolean}/> 
-                <Input type={"password"} background={boolean} placeholder={"passoword"} onChange={e => setLogindate({...loginDate, password: e.target.value }) }  required readOnly={boolean}/>
+
+
+            <form onSubmit={login} >
+                <Input type={"email"} background={boolean} placeholder={"e-mail"} onChange={e => setLogindate({ ...loginDate, email: e.target.value })} required readOnly={boolean} />
+                <Input type={"password"} background={boolean} placeholder={"passoword"} onChange={e => setLogindate({ ...loginDate, password: e.target.value })} required readOnly={boolean} />
                 <Button type={"submit"} width={"100%"} bolean={boolean} heigt={"50px"} > Log In </Button>
                 <Linkers to={"/signup"}> First time? Create an account!</Linkers>
             </form>
-        </Container> 
+        </Container>
     )
 
 }
