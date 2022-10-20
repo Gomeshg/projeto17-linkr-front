@@ -24,8 +24,8 @@ function getRanking(){
 }
 
 
-function getUser(header){
-    const promise = axios.get(`${URL}users/me`,header);
+function getUserValidation(header){
+    const promise = axios.get(`${URL}sign`,header);
     return promise;    
 
 }
@@ -40,4 +40,4 @@ function getOpen(short){
     return promise
 }
 
-export{ getOpen, getUser, getRanking, postUrl, postLogin, postCreat, deletShortly };
+export{ getOpen, getUserValidation, getRanking, postUrl, postLogin, postCreat, deletShortly };

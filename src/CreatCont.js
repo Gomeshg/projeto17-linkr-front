@@ -10,10 +10,10 @@ export default function CreatCont() {
     const navigat = useNavigate()
     function submitobj(event) {
         event.preventDefault();
-        const { name, email, password, confirmPassword } = personalDate;
-        if (password !== confirmPassword) return alert("As senhas são diferentes");
+        if(boolean) return 
+        const { name, email, password, pictureUrl } = personalDate;
         setBoolean(!boolean);
-        const i = postCreat({ name: name, email: email, password: password, confirmPassword: confirmPassword });
+        const i = postCreat({ name: name, email: email, password: password, pictureUrl: pictureUrl });
         i.then(sucess);
         i.catch(err);
     }
@@ -21,7 +21,7 @@ export default function CreatCont() {
 
     function err(value) {
         setBoolean(boolean)
-        return alert(value);
+        return alert(value.response.data === "Conflict" ? "Email já cadastrado" :  value.response.data );
     }
     function sucess() {
         alert("Parabéns, cadastro concluído");
@@ -31,15 +31,14 @@ export default function CreatCont() {
 
     return (
         <AllContainer>
-            <Container width={'100%'} ><span><h2 onClick={()=> navigat('/signin')} >Entrar </h2>&nbsp;&nbsp;&nbsp;<h2> Cadastrar-se</h2> </span></Container>
             <p> Shortly <img src={''} /> </p>
             <form onSubmit={submitobj}>
-                <Input type={"text"} background={boolean} placeholder={"Nome"} onChange={e => setPersonalDate({ ...personalDate, name: e.target.value })} readOnly={boolean} required="required" />
                 <Input type={"email"} background={boolean} placeholder={"E-mail"} onChange={e => setPersonalDate({ ...personalDate, email: e.target.value })} readOnly={boolean} required="required" />
-                <Input type={"password"} background={boolean} placeholder={"Senha"} onChange={e => setPersonalDate({ ...personalDate, password: e.target.value })} readOnly={boolean} required="required" />
-                <Input type={"password"} background={boolean} placeholder={"Confirme a senha"} onChange={e => setPersonalDate({ ...personalDate, confirmPassword: e.target.value })} readOnly={boolean} />
-                <Button type={"submit"} width={"200px"} bolean={boolean} heigt={"50px"} > Criar conta  </Button> 
-                <Linkers to={"/signin"}> Já tem uma conta? Entre agora!</Linkers> 
+                <Input type={"password"} background={boolean} placeholder={"Password"} onChange={e => setPersonalDate({ ...personalDate, password: e.target.value })} readOnly={boolean} required="required" />
+                <Input type={"text"} background={boolean} placeholder={"Username"} onChange={e => setPersonalDate({ ...personalDate, name: e.target.value })} readOnly={boolean} required="required" />
+                <Input type={"url"} background={boolean} placeholder={"Picture url"} onChange={e => setPersonalDate({ ...personalDate, pictureUrl: e.target.value })} readOnly={boolean} required="required"/>
+                <Button type={"submit"} width={"200px"} bolean={boolean} heigt={"50px"} > Sign Up  </Button> 
+                <Linkers to={"/signin"}> Switch back to Log In</Linkers> 
             </form>
              
         </AllContainer>

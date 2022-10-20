@@ -13,6 +13,15 @@ import Timeline from "./pages/timelinePage/Timeline";
 
 export default function App() {
     const [user, setUser] = useState([]); 
+    
+    useEffect( () => {
+        const token = JSON.parse(localStorage.getItem('linkr'))
+
+        if(token) console.log(token)
+
+    }, []);
+
+   
     return (
         <>
             <UserContext.Provider value={{ user, setUser }}>
@@ -21,8 +30,7 @@ export default function App() {
                 <Wrapper>
                     <BrowserRouter>
                         <Routes>
-                            <Route path='/' element={<Initial/>} />
-                            <Route path="/signin" element={<Enter />} />
+                            <Route path='/' element={<Enter/>} />
                             <Route path="/signup" element={<CreatCont />} />
                             <Route path="/timeline" element={<Timeline />} />
                             {/*<Route path='/Novo-recebido' element={<NewValue optional={true} />} /> 
