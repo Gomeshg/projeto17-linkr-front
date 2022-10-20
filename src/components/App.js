@@ -47,5 +47,8 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     height: 100vh;
-    background-color: #333333;
+    background: #333333;
+    position: sticky;
+    top: 0;
+    overflow:auto;
 `;
