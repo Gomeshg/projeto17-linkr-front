@@ -1,12 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import UserContext from './parts/UserContext';
 import { useState } from "react";
-import {useEffect } from "react";
-import ResetStyled from './reset/reset';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import CreatCont from './CreatCont';
-import Initial from './Initial';
-import Enter from './Enter';
+
+import UserContext from '../parts/UserContext';
+import ResetStyled from '../reset/reset';
+import GlobalStyle from "../styles/GlobalStyles";
+
+import CreatCont from '../CreatCont';
+import Initial from '../Initial';
+import Enter from '../Enter';
+import Timeline from "./pages/timelinePage/Timeline";
 
 export default function App() {
     const [user, setUser] = useState([]); 
@@ -23,13 +26,14 @@ export default function App() {
         <>
             <UserContext.Provider value={{ user, setUser }}>
                 <ResetStyled />
+                <GlobalStyle />
                 <Wrapper>
                     <BrowserRouter>
                         <Routes>
                             <Route path='/' element={<Enter/>} />
                             <Route path="/signup" element={<CreatCont />} />
-                            {/*<Route path="/" element={<Initial />} />
-                            <Route path='/Novo-recebido' element={<NewValue optional={true} />} /> 
+                            <Route path="/timeline" element={<Timeline />} />
+                            {/*<Route path='/Novo-recebido' element={<NewValue optional={true} />} /> 
                             <Route path='/Editar-entrada' element={<ModifiValue optional={true} />} /> 
                             <Route path='/Editar-saida' element={<ModifiValue optional={false} />} />  */}
                         </Routes>
@@ -41,6 +45,7 @@ export default function App() {
 }
 const Wrapper = styled.div`
     display: flex;
-    justify-content: center ;
+    justify-content: center;
     height: 100vh;
+    background-color: #333333;
 `;
