@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
-export default function TimelineLinks({postsFiltered, userInfo}) {
+export default function RenderUserSearched({postsFiltered, userInfo}) {
 
     return postsFiltered.map(post=>
         <TimelineLinksStyle>
