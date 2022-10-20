@@ -13,31 +13,32 @@ function postLogin(obj){
     return promise;
 }
 
-function postUrl(obj, header){
-    const promis = axios.post(`${URL}urls/shorten`, obj, header);
-    return promis;
-}
+// function postUrl(obj, token){
+//     const promis = axios.post(`${URL}urls/shorten`, obj, token);
+//     return promis;
+// }
 
-function getRanking(){
-    const promise = axios.get(`${URL}ranking`);
+// function getRanking(){
+//     const promise = axios.get(`${URL}ranking`);
+//     return promise;    
+// }
+
+
+function getUserValidation(token){
+    const header = { headers: { Authorization: `Bearer ${token}`} }
+    const promise = axios.get(`${URL}signvalid`,header);
     return promise;    
-}
-
-
-function getUserValidation(header){
-    const promise = axios.get(`${URL}sign`,header);
-    return promise;    
 
 }
 
-function deletShortly(id,header){
-    const promise = axios.delete(`${URL}urls/${id}`, header);
-    return promise;    
-}
+// function deletShortly(id,token){
+//     const promise = axios.delete(`${URL}urls/${id}`, token);
+//     return promise;    
+// }
 
-function getOpen(short){
-    const promise= axios.get(`${URL}urls/open/${short}`);
-    return promise
-}
+// function getOpen(short){
+//     const promise= axios.get(`${URL}urls/open/${short}`);
+//     return promise
+// }
 
-export{ getOpen, getUserValidation, getRanking, postUrl, postLogin, postCreat, deletShortly };
+export{  getUserValidation,  postLogin, postCreat };

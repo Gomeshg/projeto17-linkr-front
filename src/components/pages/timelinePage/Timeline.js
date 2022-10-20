@@ -6,6 +6,7 @@ import TimelineLinks from "../common/TimelineLinks";
 import Trendings from "../common/Trendings";
 
 export default function Timeline() {
+    
     return (
         <TimelineScreen>
             <Header />

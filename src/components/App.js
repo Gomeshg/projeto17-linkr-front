@@ -7,20 +7,11 @@ import ResetStyled from '../reset/reset';
 import GlobalStyle from "../styles/GlobalStyles";
 
 import CreatCont from '../CreatCont';
-import Initial from '../Initial';
 import Enter from '../Enter';
 import Timeline from "./pages/timelinePage/Timeline";
 
 export default function App() {
-    const [user, setUser] = useState([]); 
-    
-    useEffect( () => {
-        const token = JSON.parse(localStorage.getItem('linkr'))
-
-        if(token) console.log(token)
-
-    }, []);
-
+    const [user, setUser] = useState([]);
    
     return (
         <>
