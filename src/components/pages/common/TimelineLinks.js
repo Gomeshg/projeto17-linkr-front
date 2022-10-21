@@ -1,12 +1,20 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
-// import urlMetaData from "url-metadata";
+import mql from "@microlink/mql";
+import { useEffect, useState } from "react";
 
 export default function TimelineLinks(links) {
+    const [metadata, setMetadata] = useState({});
 
-    
-
-
+    useEffect(
+        () =>
+          async function getMetadata() {
+            const { status, data, response } = await mql(links.links.url);
+            console.log(data);
+            setMetadata(data);
+          },
+        [links.links.url]
+    );
 
     return (
         <TimelineLinksStyle>
@@ -20,7 +28,14 @@ export default function TimelineLinks(links) {
             <div>
                 <h2 className="username" >{links.links.userName}</h2>
                 <h3>{links.links.text}</h3>
-                <h3>{links.links.url}</h3>
+                <a href={links.links.url} target="_blank" rel="noopener noreferrer" className="metadataBox" >
+                    <div className="metadataInfo">
+                        <h1 className="metadataTitle">{metadata.title}</h1>
+                        <span className="metadataSpan">{metadata.description}</span>
+                        <h4 className="metadataUrl">{metadata.url}</h4>
+                    </div>
+                    <img src={metadata.image?.url} alt="" className="metadataImage" />
+                </a>
             </div>
         </TimelineLinksStyle>
     );
@@ -35,7 +50,7 @@ const TimelineLinksStyle = styled.div`
     display:flex;
     margin-top: 16px;
     padding: 15px;
-    word-break: break-all;
+    word-wrap: break-word;
     overflow: auto;
     
 .userIconNLikesColumn {
@@ -72,5 +87,48 @@ const TimelineLinksStyle = styled.div`
     font-weight: 700;
     font-size: 18px;
     margin-bottom: 7px;
+}
+.metadataBox {
+    width: 500px;
+    height: 155px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #4D4D4D;
+    border-radius: 11px;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+}
+.metadataInfo {
+    display: inline-block;
+    padding: 15px;
+}
+.metadataTitle {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #cecece;
+    padding-bottom: 15px;
+}
+.metadataSpan {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: #9B9595;
+}
+.metadataUrl {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: #cecece;
+    word-break: break-all;
+    padding-top: 15px;
+}
+.metadataImage {
+    width: 155px;
+    height: 155px;
+    border-radius: 0px 12px 13px 0px;
+    margin-left: 10px;
 }
 `;

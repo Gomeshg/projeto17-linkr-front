@@ -21,7 +21,6 @@ export default function Header() {
     function upDow() {
         setboolean(!boolean)
     }
-    console.log(user)
 
     return (
         <HeaderStyle boolean={boolean} >
