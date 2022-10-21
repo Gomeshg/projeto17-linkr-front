@@ -1,24 +1,18 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { getTrending } from "../../services/linkr";
 
 export default function Trendings() {
-  const data = [
-    {
-      id: 1,
-      tag: "react",
-    },
-    {
-      id: 2,
-      tag: "react",
-    },
-    {
-      id: 3,
-      tag: "react",
-    },
-    {
-      id: 4,
-      tag: "react",
-    },
-  ];
+  const [trendings, setTrendings] = useState(null);
+  useEffect(() => {
+    getTrending()
+      .then((res) => {
+        setTrendings(res.data);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }, []);
 
   return (
     <Screen>
@@ -27,9 +21,11 @@ export default function Trendings() {
       </section>
 
       <section>
-        {data.map((item) => (
-          <Hashtag># {item.tag}</Hashtag>
-        ))}
+        {trendings !== null
+          ? trendings.map((item, index) => (
+              <Hashtag key={index}># {item.tag}</Hashtag>
+            ))
+          : ""}
       </section>
     </Screen>
   );
