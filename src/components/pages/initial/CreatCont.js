@@ -1,6 +1,6 @@
-import { Button, Input, Linkers } from './parts/Subparts';
+import { Button, Input, Linkers } from '../common/Subparts';
 import { useNavigate } from 'react-router-dom';
-import { postCreat } from './parts/linker';
+import { postCreat } from '../../services/linkr';
 import styled from 'styled-components';
 import { useState } from 'react';
 
@@ -101,6 +101,28 @@ const AllContainer = styled.div`
 
     }
 
-
+    @media(max-width: 1000px) {
+        p{
+            height: 40% ;
+            width: 100%;
+            h1{
+                font-size: 76px;
+                line-height: 84px;
+                letter-spacing: 0.05em;
+                text-align: center;
+            }
+            h2{
+                font-size: 23px;
+                line-height: 34px;
+                text-align: center;
+            }
+        }
+        form{
+            display: block ;
+            height: 60% ;
+            width: 100%;
+            
+        }
+    }
 
     `;

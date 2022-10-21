@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -6,13 +6,20 @@ import UserContext from '../parts/UserContext';
 import ResetStyled from '../reset/reset';
 import GlobalStyle from "../styles/GlobalStyles";
 
-import CreatCont from '../CreatCont';
-import Enter from '../Enter';
+import CreatCont from './pages/initial/CreatCont';
+import Enter from './pages/initial/Enter';
 import Timeline from "./pages/timelinePage/Timeline";
+import { getUserValidation } from "./services/linkr";
 
 export default function App() {
     const [user, setUser] = useState([]);
-   
+   console.log(user)
+   useEffect(()=>{
+    const token = JSON.parse(localStorage.getItem('linkr'))
+    if (!user.userName && token) getUserValidation(token.token).then((value) => { setUser({ ...user, ...value.data }) })
+   },[])
+
+
     return (
         <>
             <UserContext.Provider value={{ user, setUser }}>
