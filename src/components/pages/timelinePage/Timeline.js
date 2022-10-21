@@ -21,7 +21,7 @@ export default function Timeline() {
         });
     }, []);
     console.log(links)
-
+    
     return (
         <TimelineScreen>
             <Header />

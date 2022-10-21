@@ -6,22 +6,20 @@ import UserContext from '../parts/UserContext';
 import ResetStyled from '../reset/reset';
 import GlobalStyle from "../styles/GlobalStyles";
 
-import CreatCont from '../CreatCont';
-import Initial from '../Initial';
-import Enter from '../Enter';
+import CreatCont from './pages/initial/CreatCont';
+import Enter from './pages/initial/Enter';
 import Timeline from "./pages/timelinePage/Timeline";
+import { getUserValidation } from "./services/linkr";
 
 export default function App() {
-    const [user, setUser] = useState([]); 
-    
-    useEffect( () => {
-        const token = JSON.parse(localStorage.getItem('linkr'))
+    const [user, setUser] = useState([]);
+   console.log(user)
+   useEffect(()=>{
+    const token = JSON.parse(localStorage.getItem('linkr'))
+    if (!user.userName && token) getUserValidation(token.token).then((value) => { setUser({ ...user, ...value.data }) })
+   },[])
 
-        if(token) console.log(token)
 
-    }, []);
-
-   
     return (
         <>
             <UserContext.Provider value={{ user, setUser }}>
