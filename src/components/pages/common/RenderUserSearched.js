@@ -1,67 +1,93 @@
 import styled from "styled-components";
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import {useNavigate} from 'react-router-dom';
 
-export default function RenderUserSearched({postsFiltered, userInfo}) {
+export default function RenderUserSearched({usersFiltered}) {
 
-    return postsFiltered.map(post=>
-        <TimelineLinksStyle>
-            <div className="userIconNLikesColumn">
-                <img src={userInfo.pictureUrl} alt="user photo" className="profileIcon" ></img>
-                <h3><AiOutlineHeart className="icon" /></h3>
-                {/* <h3><AiFillHeart className="icon" /></h3> */}
-                <h3 className="likes">{post.likes} likes</h3>
-            </div>
-            <div>
-                <h2 className="username" >{userInfo.userName}</h2>
-                <h3>{post.text}</h3>
-            </div>
-        </TimelineLinksStyle>
+    function accessUserPage(id){
+        navigate(`/user/${id}`)
+        window.location.reload();
+    }
+
+    const navigate = useNavigate();
+
+    return (usersFiltered.length===0) ? 
+        <UserNotListed>
+            <h2>No users found</h2>
+        </UserNotListed>
+    : 
+    usersFiltered.map(user=>
+        <UserListed onClick={()=>accessUserPage(user.id)}>
+            <img src={user.pictureUrl}/>
+            <h1>{user.userName}</h1>
+        </UserListed>
     );
 };
 
-const TimelineLinksStyle = styled.div`
-    width: 600px;
-    border-radius: 16px;
-    background-color: #171717;
-    color: #ffffff;
-
-    display:flex;
-    margin-top: 16px;
-    padding: 15px;
-
-.userIconNLikesColumn {
-    width: 50px;
-    margin-right: 15px;
-
+const UserListed = styled.div`
+    width: 530px;
+    height: 40px;
+    margin-top: 20px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.profileIcon {
-    height: 50px;
-    width: 50px;
-    margin-bottom: 20px;
-    border-radius: 50%;
-}
-.icon {
-    height: 25px;
-    width: 25px;
-}
-.likes {
-    font-family: 'Lato', sans-serif;
-    font-weight: 400;
-    font-size: 11px;
-}
-.username {
-    font-family: 'Lato', sans-serif;
-    font-weight: 400;
-    font-size: 20px;
-    margin-bottom: 7px;
-}
-.text {
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    margin-bottom: 7px;
-}
-`;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    cursor: pointer;
+
+    img{
+        height: 40px;
+        width: 40px;
+        border-radius: 20px;
+    }
+
+    h1{
+        font-size 19px;
+        font-family: 'Lato';
+        font-weight: 400;
+        color: #515151;
+        position: absolute;
+        left: 60px;
+    }
+
+    h2{
+        font-size 19px;
+        font-family: 'Lato';
+        font-weight: 400;
+        color: #515151;
+        position: absolute;
+        left: 20px;
+    }
+`
+
+const UserNotListed = styled.div`
+    width: 530px;
+    height: 40px;
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+
+    img{
+        height: 40px;
+        width: 40px;
+        border-radius: 20px;
+    }
+
+    h1{
+        font-size 19px;
+        font-family: 'Lato';
+        font-weight: 400;
+        color: #515151;
+        position: absolute;
+        left: 60px;
+    }
+
+    h2{
+        font-size 19px;
+        font-family: 'Lato';
+        font-weight: 400;
+        color: #515151;
+        position: absolute;
+        left: 20px;
+    }
+`

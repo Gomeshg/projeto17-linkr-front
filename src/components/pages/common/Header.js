@@ -2,6 +2,9 @@ import styled from "styled-components"
 import { SlArrowDown } from 'react-icons/sl';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useState } from "react";
+import axios from "axios";
+
+import RenderUserSearched from "./RenderUserSearched";
 
 
 const profileIcon = "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221"
@@ -9,6 +12,20 @@ const profileIcon = "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pai
 export default function Header() {
 
     const [openSearchResults, setOpenSearchResults] = useState(false);
+    const [usersFiltered, setUsersFiltered] = useState([]);
+
+    async function getUsersFiltered(usernameSearched){
+
+        const body = {partOfUsername:usernameSearched};
+
+        try {
+            const res = await axios.get(`http://localhost:4000/users/search/${usernameSearched}`);
+            setUsersFiltered(res.data)
+        } catch(err) {
+            console.error(err);
+            alert("Erro ao carregar! Consulte os logs.")
+        }
+    }
 
     function openSearchBar(e){
 
@@ -16,12 +33,11 @@ export default function Header() {
 
         if (usernameSearched.length>=3){
             setOpenSearchResults(true);
+            getUsersFiltered(usernameSearched);
         } else {
             setOpenSearchResults(false);
+            setUsersFiltered([])
         }
-
-        console.log(usernameSearched);
-        console.log(openSearchResults);
 
     }
 
@@ -33,14 +49,7 @@ export default function Header() {
                 <input placeholder="Search for people" onChange={openSearchBar} />
                 <AiOutlineSearch class="searchIcon" />
                 <ResultsSearchbar>
-                    <UserListed>
-                        <img src="https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221"/>
-                        <h1>Fulano 1</h1>
-                    </UserListed>
-                    <UserListed>
-                        <img src="https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221"/>
-                        <h1>Fulano 2</h1>
-                    </UserListed>
+                    <RenderUserSearched usersFiltered={usersFiltered}/>
                 </ResultsSearchbar>
             </Searchbar>
             <div>
@@ -136,39 +145,13 @@ const ResultsSearchbar = styled.div`
     padding-top: 40px;
     padding-bottom: 15px;
     top: 0;
-    left:0;
-    z-index: -1;
+    left: 0;
+    z-index:-1;
     background-color: #E7E7E7;
     width: 560px;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 8px;
-    }
-
-`
-
-const UserListed = styled.div`
-    width: 530px;
-    height: 40px;
-    margin-top: 20px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    position: relative;
-
-    img{
-        height: 40px;
-        width: 40px;
-        border-radius: 20px;
-    }
-
-    h1{
-        font-size 19px;
-        font-family: 'Lato';
-        font-weight: 400;
-        color: #515151;
-        position: absolute;
-        left: 60px;
-    }
+    
 `
