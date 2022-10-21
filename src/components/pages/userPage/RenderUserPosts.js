@@ -1,30 +1,19 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
-// import urlMetaData from "url-metadata";
 
+export default function TimelineLinks({postsFiltered, userInfo}) {
 
-const objetoPTesteUsuario = {
-    username: "Juvencio",
-    userPicture: "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221"
-};
-const objetoPTesteLink = [{id: 30, userId: 1, likes: 124, url: "https://google.com",text: "Google", createDate: "2022-10-30"}, {id: 8, userId: 1, likes: 201, url: "https://globo.com",text: "Globo.com", createDate: "2022-10-25"},{id: 2, userId: 1, likes: 155, url: "https://driven.com.br",text: "Driven", createDate: "2022-10-12"}]
-
-export default function TimelineLinks(links) {    
-
-
-    return (
+    return postsFiltered.map(post=>
         <TimelineLinksStyle>
             <div className="userIconNLikesColumn">
-                <img src={links.links.pictureUrl} alt="idoso nervoso" className="profileIcon" ></img>
+                <img src={userInfo.pictureUrl} alt="user photo" className="profileIcon" ></img>
                 <h3><AiOutlineHeart className="icon" /></h3>
                 {/* <h3><AiFillHeart className="icon" /></h3> */}
-                <h3 className="likes">{links.links.likes} likes</h3>
+                <h3 className="likes">{post.likes} likes</h3>
             </div>
-
             <div>
-                <h2 className="username" >{links.links.userName}</h2>
-                <h3>{links.links.text}</h3>
-                <h3>{links.links.url}</h3>
+                <h2 className="username" >{userInfo.userName}</h2>
+                <h3>{post.text}</h3>
             </div>
         </TimelineLinksStyle>
     );
@@ -39,9 +28,7 @@ const TimelineLinksStyle = styled.div`
     display:flex;
     margin-top: 16px;
     padding: 15px;
-    word-break: break-all;
-    overflow: auto;
-    
+
 .userIconNLikesColumn {
     width: 50px;
     margin-right: 15px;

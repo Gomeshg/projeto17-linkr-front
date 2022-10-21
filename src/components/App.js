@@ -10,6 +10,7 @@ import CreatCont from './pages/initial/CreatCont';
 import Enter from './pages/initial/Enter';
 import Timeline from "./pages/timelinePage/Timeline";
 import { getUserValidation } from "./services/linkr";
+import UserPage from "./pages/userPage/UserPage.js";
 
 export default function App() {
     const [user, setUser] = useState([]);
@@ -31,6 +32,7 @@ export default function App() {
                             <Route path='/' element={<Enter/>} />
                             <Route path="/signup" element={<CreatCont />} />
                             <Route path="/timeline" element={<Timeline />} />
+                            <Route path="/user/:id" element={<UserPage />} />
                             {/*<Route path='/Novo-recebido' element={<NewValue optional={true} />} /> 
                             <Route path='/Editar-entrada' element={<ModifiValue optional={true} />} /> 
                             <Route path='/Editar-saida' element={<ModifiValue optional={false} />} />  */}
