@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:4000";
 
-function postLink(link) {
-    const promise = axios.post(`${BASE_URL}/timeline`, link);
+function postLink(link, postAuth) {
+    const promise = axios.post(`${BASE_URL}/timeline`, link, postAuth);
     return promise;
 };
 
