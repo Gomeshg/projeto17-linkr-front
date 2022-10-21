@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
-// import urlMetaData from "url-metadata";
 
 export default function TimelineLinks(links) {
+    
 
     return (
         <TimelineLinksStyle>
@@ -16,7 +16,6 @@ export default function TimelineLinks(links) {
             <div>
                 <h2 className="username" >{links.links.userName}</h2>
                 <h3>{links.links.text}</h3>
-                <h3>{links.links.url}</h3>
             </div>
         </TimelineLinksStyle>
     );
