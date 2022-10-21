@@ -1,8 +1,8 @@
-import { Button, Input, Linkers } from "./parts/Subparts";
+import { Button, Input, Linkers } from "../common/Subparts";
 import { useNavigate } from "react-router-dom";
-import UserContext from './parts/UserContext';
+import UserContext from '../../../parts/UserContext';
 import { useState, useContext, useEffect } from "react";
-import { postLogin, getUserValidation } from "./parts/linker";
+import { postLogin, getUserValidation } from "../../services/linkr";
 import styled from "styled-components";
 
 
@@ -14,7 +14,7 @@ export default function Enter() {
 
     useEffect(() => {
         const token = JSON.parse(localStorage.getItem('linkr'))
-
+        console.log(token)
         if (token) getUserValidation(token.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') })
 
     }, []);
@@ -68,6 +68,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+
     h1{
 
         font-family: 'Passion One';
@@ -114,15 +115,29 @@ const Container = styled.div`
     
     }
 
-    @media scren and(min-width:800px){
-        .form{
-            background-color: red ;
-            display: none ;
+    @media(max-width: 1000px) {
+        p{
+            height: 40% ;
+            width: 100%;
+            h1{
+                font-size: 76px;
+                line-height: 84px;
+                letter-spacing: 0.05em;
+                text-align: center;
+            }
+            h2{
+                font-size: 23px;
+                line-height: 34px;
+                text-align: center;
+            }
         }
-
+        form{
+            display: block ;
+            height: 60% ;
+            width: 100%;
+            
+        }
     }
-
-
    
     
 

@@ -74,7 +74,7 @@ function Linkers({...props}){
 
 const Linke = styled.div`
     margin: 10px ;
-    width: 100Vw ;
+    width: 100% ;
     text-align: center ;
     a{
     font-family:'Lato' ;

@@ -13,6 +13,7 @@ export default function Header() {
 
     function logout() {
         localStorage.clear()
+        setUser({})
         navigat('/');
 
     }
