@@ -7,7 +7,7 @@ const objetoPTesteUsuario = {
     userPicture: "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221"
 };
 
-export default function LinkShare() {
+export default function LinkShare({reload}) {
     const [loading, setLoading] = useState(true);
 
     const [url, setUrl] = useState("");
@@ -45,6 +45,7 @@ export default function LinkShare() {
                 console.log(link);
                 setUrl("");
                 setText("");
+                reload();
             }).catch((error) => {
                 alert("Houve um erro ao publicar seu link");
             });

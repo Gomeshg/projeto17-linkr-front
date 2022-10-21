@@ -20,8 +20,7 @@ export default function Timeline() {
             alert("An error occured while trying to fetch the posts, please refresh the page")
         });
     }, []);
-    console.log(links)
-    
+  
     return (
         <TimelineScreen>
             <Header />
@@ -31,12 +30,12 @@ export default function Timeline() {
             <div className="timelineBody">
                 <div className="postsBody">
 
-                    <LinkShare />
+                    <LinkShare/>
                     
                     {(loading) ? <h3 className="noLinks">Loading...</h3>
                         : [(links.lenght === 0) ? <h3 className="noLinks">There are no posts yet</h3>
                             : links.map((links) => (
-                                <TimelineLinks links={links} />
+                                <TimelineLinks links={links}  />
                             ))
                         ]
                     }
