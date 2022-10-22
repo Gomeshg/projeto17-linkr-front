@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { getLink } from "../../services/linkr";
+import { getLinksFilteredByHashtag } from "../../services/linkr";
 
 import Header from "../common/Header";
 import TimelineLinks from "../common/TimelineLinks";
@@ -10,7 +10,7 @@ export default function Hashtag() {
   const [links, setLinks] = useState(null);
 
   useEffect(() => {
-    getLink()
+    getLinksFilteredByHashtag()
       .then((res) => {
         setLinks(res.data);
       })
