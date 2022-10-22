@@ -20,16 +20,21 @@ function postCreat(obj) {
 function postLogin(obj) {
   const promise = axios.post(`${BASE_URL}/signin`, obj);
   return promise;
+
+function getUserValidation(token){
+    const header = { headers: { Authorization: `Bearer ${token}`} }
+    const promise = axios.get(`${BASE_URL}/signvalid`,header);
+    return promise;    
 }
 
-function getUserValidation(token) {
-  const header = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.get(`${BASE_URL}/signvalid`, header);
-  return promise;
-}
+// function getUserValidation(token) {
+//   const header = { headers: { Authorization: `Bearer ${token}` } };
+//   const promise = axios.get(`${BASE_URL}/signvalid`, header);
+//   return promise;
+// }
 
-async function getTrending() {
-  const promise = await axios.get(`${BASE_URL}/trending`);
+function getTrending() {
+  const promise = axios.get(`${BASE_URL}/trending`);
   return promise;
 }
 

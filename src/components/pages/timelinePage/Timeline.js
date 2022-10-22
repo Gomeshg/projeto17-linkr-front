@@ -11,14 +11,22 @@ export default function Timeline() {
   const [loading, setLoading] = useState(true);
   const [links, setLinks] = useState([]);
 
-  // useEffect(() => {
-  //     getLink().then((res) => {
-  //         setLoading(false);
-  //         setLinks(res.data);
-  //     }).catch(() => {
-  //         alert("An error occured while trying to fetch the posts, please refresh the page")
-  //     });
-  // }, []);
+  useEffect(() => {
+    getLink()
+      .then((res) => {
+        setLoading(false);
+        setLinks(res.data);
+      })
+      .catch(() => {
+        alert(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        );
+      });
+  }, []);
+
+  // return (
+  //     <TimelineScreen>
+  //         <Header />
 
   return (
     <TimelineScreen>
@@ -26,25 +34,36 @@ export default function Timeline() {
 
       <div className="pageTitle"> timeline </div>
 
-      <div className="timelineBody">
-        <div className="postsBody">
-          <LinkShare />
+      <LinkShare />
 
-          {loading ? (
-            <h3 className="noLinks">Loading...</h3>
+      {loading ? (
+        <h3 className="noLinks">Loading...</h3>
+      ) : (
+        [
+          links.lenght === 0 ? (
+            <h3 className="noLinks">There are no posts yet</h3>
           ) : (
-            [
-              links.lenght === 0 ? (
-                <h3 className="noLinks">There are no posts yet</h3>
-              ) : (
-                links.map((links) => <TimelineLinks links={links} />)
-              ),
-            ]
-          )}
-        </div>
+            links.map((links) => <TimelineLinks links={links} />)
+          ),
+        ]
+      )}
 
-        <Trendings />
-      </div>
+      {loading ? (
+        <h3 className="noLinks">Loading...</h3>
+      ) : (
+        [
+          links.lenght === 0 ? (
+            <h3 className="noLinks">There are no posts yet</h3>
+          ) : (
+            links.map((links) => <TimelineLinks links={links} />)
+          ),
+        ]
+      )}
+
+      {/* </div> */}
+
+      <Trendings />
+      {/* </div> */}
     </TimelineScreen>
   );
 }
