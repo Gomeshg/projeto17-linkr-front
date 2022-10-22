@@ -26,7 +26,6 @@ function getUserValidation(token){
     const header = { headers: { Authorization: `Bearer ${token}`} }
     const promise = axios.get(`${BASE_URL}/signvalid`,header);
     return promise;    
-
 }
 
 
