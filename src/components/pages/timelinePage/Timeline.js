@@ -24,46 +24,44 @@ export default function Timeline() {
       });
   }, []);
 
-  // return (
-  //     <TimelineScreen>
-  //         <Header />
-
   return (
     <TimelineScreen>
       <Header />
 
       <div className="pageTitle"> timeline </div>
 
-      <LinkShare />
-
-      {loading ? (
-        <h3 className="noLinks">Loading...</h3>
-      ) : (
-        [
-          links.lenght === 0 ? (
-            <h3 className="noLinks">There are no posts yet</h3>
+      <Content>
+        <Left>
+          <LinkShare />
+          {loading ? (
+            <h3 className="noLinks">Loading...</h3>
           ) : (
-            links.map((links) => <TimelineLinks links={links} />)
-          ),
-        ]
-      )}
+            [
+              links.lenght === 0 ? (
+                <h3 className="noLinks">There are no posts yet</h3>
+              ) : (
+                links.map((links) => <TimelineLinks links={links} />)
+              ),
+            ]
+          )}
 
-      {loading ? (
-        <h3 className="noLinks">Loading...</h3>
-      ) : (
-        [
-          links.lenght === 0 ? (
-            <h3 className="noLinks">There are no posts yet</h3>
+          {loading ? (
+            <h3 className="noLinks">Loading...</h3>
           ) : (
-            links.map((links) => <TimelineLinks links={links} />)
-          ),
-        ]
-      )}
+            [
+              links.lenght === 0 ? (
+                <h3 className="noLinks">There are no posts yet</h3>
+              ) : (
+                links.map((links) => <TimelineLinks links={links} />)
+              ),
+            ]
+          )}
+        </Left>
 
-      {/* </div> */}
-
-      <Trendings />
-      {/* </div> */}
+        <Right>
+          <Trendings />
+        </Right>
+      </Content>
     </TimelineScreen>
   );
 }
@@ -84,3 +82,12 @@ font-family: 'Passion One', cursive;
     color: #ffffff;
   }
 `;
+
+const Content = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Left = styled.div``;
+
+const Right = styled.div``;

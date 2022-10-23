@@ -31,8 +31,8 @@ export default function App() {
         <Wrapper>
           <BrowserRouter>
             <Routes>
-              {/* <Route path='/' element={<Enter/>} /> */}
-              {/* <Route path="/signup" element={<CreatCont />} /> */}
+              <Route path="/" element={<Enter />} />
+              <Route path="/signup" element={<CreatCont />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/hashtag/:hashtag" element={<Hashtag />} />
               {/*<Route path='/Novo-recebido' element={<NewValue optional={true} />} /> 
