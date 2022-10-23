@@ -8,9 +8,10 @@ import { useParams } from "react-router-dom";
 
 export default function Hashtag() {
   const [links, setLinks] = useState(null);
+  const { hashtag } = useParams();
 
   useEffect(() => {
-    getLinksFilteredByHashtag()
+    getLinksFilteredByHashtag(hashtag)
       .then((res) => {
         setLinks(res.data);
       })
@@ -20,8 +21,6 @@ export default function Hashtag() {
         );
       });
   }, []);
-
-  const { hashtag } = useParams();
 
   return (
     <Screen>
