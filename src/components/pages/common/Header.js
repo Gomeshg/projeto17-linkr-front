@@ -26,6 +26,7 @@ export default function Header() {
     function upDow() {
         setboolean(!boolean)
     }
+    console.log("user")
     console.log(user)
 
     async function getUsersFiltered(usernameSearched){
@@ -54,20 +55,6 @@ export default function Header() {
         }
 
     }
-
-    /* return (
-        <HeaderStyle boolean={boolean} >
-            <h1 className="linkrTitle" >linkr</h1>
-            <span onClick={upDow}>
-                <div className="minBox">
-                    {boolean ? <SlArrowUp className="icon" /> : <SlArrowDown className="icon" />}
-                    <img src={user.pictureUrl} alt="idoso nervoso" className="profileIcon" ></img>
-                    {boolean ? <div className={"scritBox"} onClick={()=>logout()} >
-                        logout
-                    </div> : ''}
-                </div>
-            </span>
-        </HeaderStyle> */
 
     return ( openSearchResults ? 
         <HeaderStyle boolean={boolean}>
@@ -174,6 +161,8 @@ const Searchbar = styled.div`
 
     position: relative;
     z-index: 1;
+    display: flex;
+    align-items: center;
 
     input {
         width: 560px;

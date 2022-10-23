@@ -33,6 +33,7 @@ export default function Enter() {
     function sucess(value) {
         localStorage.setItem('linkr', JSON.stringify(value.data));
         setUser(value.data);
+        console.log(3)
         getUserValidation(value.data.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') }).catch(err)
 
     }

@@ -14,7 +14,8 @@ import UserPage from "./pages/userPage/UserPage.js";
 
 export default function App() {
     const [user, setUser] = useState([]);
-   console.log(user)
+    console.log("user")
+    console.log(user)
    useEffect(()=>{
     const token = JSON.parse(localStorage.getItem('linkr'))
     if (!user.userName && token) getUserValidation(token.token).then((value) => { setUser({ ...user, ...value.data }) })

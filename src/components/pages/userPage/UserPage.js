@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import axios from 'axios';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 
+import UserContext from "../../../parts/UserContext";
 import Header from "../common/Header";
 import RenderUserPosts from "./RenderUserPosts";
 import Trendings from "../common/Trendings";
@@ -13,20 +14,10 @@ export default function UserPage() {
 
     const params = useParams();
     const id = params.id
+    const {user} = useContext(UserContext)
 
     const [postsFiltered, setPostsFiltered] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
-
-    async function getUserInfo(){
-
-        try {
-            const res = await axios.get(`http://localhost:4000/user/${id}`);
-            setUserInfo(...res.data)
-        } catch(err) {
-            console.error(err);
-            alert("Erro ao carregar! Consulte os logs.")
-        }
-    }
 
     async function getUserPosts(){
 
@@ -40,7 +31,6 @@ export default function UserPage() {
     }
 
     useEffect(()=>{
-        getUserInfo();
         getUserPosts();
     },[])
     
@@ -48,7 +38,7 @@ export default function UserPage() {
     return ( (postsFiltered.length===0) ?
         <TimelineScreen>
             <Header />
-            <div className="pageTitle"> {(userInfo===[]) ? "" : userInfo.userName}'s posts </div>
+            <div className="pageTitle"> {(user===[]) ? "" : user.userName}'s posts </div>
             <div className="timelineBody">
                 <div className="postsBody">
                     <NoPostsText>
@@ -61,10 +51,10 @@ export default function UserPage() {
         :
         <TimelineScreen>
             <Header />
-            <div className="pageTitle"> {(userInfo===[]) ? "" : userInfo.userName}'s posts </div>
+            <div className="pageTitle"> {(user===[]) ? "" : user.userName}'s posts </div>
             <div className="timelineBody">
                 <div className="postsBody">
-                    <RenderUserPosts userInfo={userInfo} postsFiltered={postsFiltered}/>
+                    <RenderUserPosts userInfo={user} postsFiltered={postsFiltered}/>
                 </div>                
                 <Trendings />
             </div>

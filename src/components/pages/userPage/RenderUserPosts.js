@@ -3,6 +3,9 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
 export default function TimelineLinks({postsFiltered, userInfo}) {
 
+    console.log(userInfo)
+    console.log(postsFiltered)
+
     return postsFiltered.map(post=>
         <TimelineLinksStyle>
             <div className="userIconNLikesColumn">
