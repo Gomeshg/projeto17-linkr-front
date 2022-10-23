@@ -33,7 +33,6 @@ export default function Enter() {
     function sucess(value) {
         localStorage.setItem('linkr', JSON.stringify(value.data));
         setUser(value.data);
-        console.log(3)
         getUserValidation(value.data.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') }).catch(err)
 
     }
@@ -69,9 +68,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-
     h1{
-
         font-family: 'Passion One';
         font-style: normal;
         font-weight: 700;
@@ -89,10 +86,7 @@ const Container = styled.div`
         font-size: 43px;
         line-height: 64px;
         color: #FFFFFF;
-
-
     }
-
     p{
         display: flex ;
         align-items: center ;
@@ -100,9 +94,7 @@ const Container = styled.div`
         background-color: #151515 ;
         height: 100% ;
         width:70% ;
-
     }
-
     
     
     form{
@@ -115,7 +107,6 @@ const Container = styled.div`
         flex-wrap: wrap;
     
     }
-
     @media(max-width: 1000px) {
         p{
             height: 40% ;
@@ -141,6 +132,4 @@ const Container = styled.div`
     }
    
     
-
     `;
-

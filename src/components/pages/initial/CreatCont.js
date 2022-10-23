@@ -69,7 +69,6 @@ const AllContainer = styled.div`
     }
    
     h1{
-
         font-family: 'Passion One';
         font-style: normal;
         font-weight: 700;
@@ -79,7 +78,6 @@ const AllContainer = styled.div`
         color: #FFFFFF;
         width: 80% ;
     }
-
     h2{
         font-family: 'Oswald';
         font-style: normal;
@@ -87,10 +85,7 @@ const AllContainer = styled.div`
         font-size: 43px;
         line-height: 64px;
         color: #FFFFFF;
-
-
     }
-
     p{
         display: flex ;
         align-items: center ;
@@ -98,9 +93,7 @@ const AllContainer = styled.div`
         background-color: #151515 ;
         height: 100% ;
         width:70% ;
-
     }
-
     @media(max-width: 1000px) {
         p{
             height: 40% ;
@@ -124,5 +117,4 @@ const AllContainer = styled.div`
             
         }
     }
-
     `;

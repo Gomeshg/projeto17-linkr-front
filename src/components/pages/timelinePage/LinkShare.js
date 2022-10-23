@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components"
-import { postLink } from "../../services/linkr";
 
-const objetoPTesteUsuario = {
-    username: "Juvencio",
-    userPicture: "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221"
-};
+import UserContext from "../../../parts/UserContext";
+import { postLink } from "../../services/linkr";
 
 export default function LinkShare() {
     const [loading, setLoading] = useState(true);
+    const { user, setUser } = useContext(UserContext);
 
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
@@ -32,6 +30,8 @@ export default function LinkShare() {
     function postUrl(e) {
         e.preventDefault();
         const validate = validation();
+        const token = JSON.parse(localStorage.getItem('linkr'));
+        const postAuth = { headers: { "Authorization": "Bearer " + token.token} };
 
         const link = {
             url: url,
@@ -41,10 +41,8 @@ export default function LinkShare() {
         if (validate === true) {
             setLoading(false);
 
-            postLink(link).then(() => {
-                console.log(link);
-                setUrl("");
-                setText("");
+            postLink(link, postAuth).then(() => {
+                window.location.reload(false);
             }).catch((error) => {
                 alert("Houve um erro ao publicar seu link");
             });
@@ -55,7 +53,7 @@ export default function LinkShare() {
     return (
         <LinkShareStyle>
             <div>
-                <img src={objetoPTesteUsuario.userPicture} alt="idoso nervoso" className="profileIcon" ></img>
+                <img src={user.pictureUrl} alt="idoso nervoso" className="profileIcon" ></img>
             </div>
             <div>
                 <h2 className="shareTitle">What are you going to share today?</h2>
@@ -91,13 +89,11 @@ const LinkShareStyle = styled.div`
     border-radius: 16px;
     color: #707070;
     word-break: break-all;
-
     width: 600px;
     height: 200px;
     background-color: #ffffff;
     margin-bottom: 13px;
     padding: 15px;
-
     display:flex;
     margin-top: 16px;
     @media screen and (max-width: 900px) {
@@ -123,7 +119,6 @@ const LinkShareStyle = styled.div`
     border-radius: 5px;
     background: #EFEFEF;
     margin: 5px 0 5px 0;
-
     font-family: 'Lato', sans-serif;
     font-weight: 300;
     font-size: 15px;
@@ -146,7 +141,6 @@ const LinkShareStyle = styled.div`
     ::-ms-input-placeholder { /* Microsoft Edge */
         color: #949494;
     }
-
     ::placeholder { /* Most modern browsers support this now. */
         color: #949494;
     }
@@ -161,7 +155,6 @@ const LinkShareStyle = styled.div`
     border-radius: 5px;
     margin-left: 385px;
     background-color: #1877F2;
-
     font-family: 'Lato', sans-serif;
     font-weight: 700;
     font-size: 15px;

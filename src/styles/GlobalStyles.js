@@ -10,12 +10,10 @@ font-family: 'Passion One', cursive;
     width: 925px;
     height: 160px;
     padding: 130px 0 15px 0;
-
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
     font-size: 45px;
     color: #ffffff;
-
     display: flex;
     justify-content: flex-start;
     align-items: center;

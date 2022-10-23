@@ -51,11 +51,6 @@ table {
 strong {
 	font-weight: bold;
 }
-
-
-
-
-
 `
 
 

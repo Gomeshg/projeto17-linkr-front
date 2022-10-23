@@ -16,7 +16,6 @@ const Contai = styled.div`
     border-radius: 10px;
     width:${props => props.width } ;
     height:${props => props.height } ;
-
 `;
 function Heade({...props}){
     return(
@@ -82,7 +81,6 @@ const Linke = styled.div`
     font-size: 20px;
     line-height: 24px;
     color: #FFFFFF ;
-
     }
 `;
 
@@ -134,7 +132,6 @@ const Inp = styled.input`
         border: 1 none;
         outline: 0;
         }    
-
 `;
 
 export { Container, Button ,Text , Input, Linkers, Heade }

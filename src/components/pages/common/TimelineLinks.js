@@ -1,16 +1,20 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
-// import urlMetaData from "url-metadata";
+import mql from "@microlink/mql";
+import { useEffect, useState } from "react";
 
+export default function TimelineLinks(links) {
+    const [metadata, setMetadata] = useState({});
 
-const objetoPTesteUsuario = {
-    username: "Juvencio",
-    userPicture: "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221"
-};
-const objetoPTesteLink = [{id: 30, userId: 1, likes: 124, url: "https://google.com",text: "Google", createDate: "2022-10-30"}, {id: 8, userId: 1, likes: 201, url: "https://globo.com",text: "Globo.com", createDate: "2022-10-25"},{id: 2, userId: 1, likes: 155, url: "https://driven.com.br",text: "Driven", createDate: "2022-10-12"}]
-
-export default function TimelineLinks(links) {    
-
+    useEffect(
+        () =>
+          async function getMetadata() {
+            const { status, data, response } = await mql(links.links.url);
+            console.log(data);
+            setMetadata(data);
+          },
+        [links.links.url]
+    );
 
     return (
         <TimelineLinksStyle>
@@ -24,7 +28,14 @@ export default function TimelineLinks(links) {
             <div>
                 <h2 className="username" >{links.links.userName}</h2>
                 <h3>{links.links.text}</h3>
-                <h3>{links.links.url}</h3>
+                <a href={links.links.url} target="_blank" rel="noopener noreferrer" className="metadataBox" >
+                    <div className="metadataInfo">
+                        <h1 className="metadataTitle">{metadata.title}</h1>
+                        <span className="metadataSpan">{metadata.description}</span>
+                        <h4 className="metadataUrl">{metadata.url}</h4>
+                    </div>
+                    <img src={metadata.image?.url} alt="" className="metadataImage" />
+                </a>
             </div>
         </TimelineLinksStyle>
     );
@@ -35,17 +46,15 @@ const TimelineLinksStyle = styled.div`
     border-radius: 16px;
     background-color: #171717;
     color: #ffffff;
-
     display:flex;
     margin-top: 16px;
     padding: 15px;
-    word-break: break-all;
+    word-wrap: break-word;
     overflow: auto;
     
 .userIconNLikesColumn {
     width: 50px;
     margin-right: 15px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -76,5 +85,48 @@ const TimelineLinksStyle = styled.div`
     font-weight: 700;
     font-size: 18px;
     margin-bottom: 7px;
+}
+.metadataBox {
+    width: 500px;
+    height: 155px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #4D4D4D;
+    border-radius: 11px;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+}
+.metadataInfo {
+    display: inline-block;
+    padding: 15px;
+}
+.metadataTitle {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #cecece;
+    padding-bottom: 15px;
+}
+.metadataSpan {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: #9B9595;
+}
+.metadataUrl {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: #cecece;
+    word-break: break-all;
+    padding-top: 15px;
+}
+.metadataImage {
+    width: 155px;
+    height: 155px;
+    border-radius: 0px 12px 13px 0px;
+    margin-left: 10px;
 }
 `;
