@@ -4,7 +4,9 @@ import { getLinksFilteredByHashtag } from "../../services/linkr";
 
 import Header from "../common/Header";
 import TimelineLinks from "../common/TimelineLinks";
+import trendings from "../common/Trendings";
 import { useParams } from "react-router-dom";
+import Trendings from "../common/Trendings";
 
 export default function Hashtag() {
   const [links, setLinks] = useState(null);
@@ -25,10 +27,20 @@ export default function Hashtag() {
   return (
     <Screen>
       <Header />
+
       <PageTitle># {hashtag}</PageTitle>
-      {links !== null
-        ? links.map((link, index) => <TimelineLinks key={index} links={link} />)
-        : "Loading..."}
+
+      <Content>
+        <Posts>
+          {links !== null
+            ? links.map((link, index) => (
+                <TimelineLinks key={index} links={link} />
+              ))
+            : "Loading..."}
+        </Posts>
+
+        <Trendings />
+      </Content>
     </Screen>
   );
 }
@@ -48,4 +60,15 @@ const PageTitle = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+`;
+const Content = styled.div`
+  margin-top: 35px;
+
+  display: flex;
+  justify-content: space-between;
+`;
+const Posts = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
