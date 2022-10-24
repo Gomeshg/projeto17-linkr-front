@@ -12,7 +12,22 @@ export default function Timeline() {
   const [links, setLinks] = useState([]);
   const token = JSON.parse(localStorage.getItem("linkr"));
 
-  async function reloading() {
+  // async function reloading() {
+  //   getLink(token.token)
+  //     .then((res) => {
+  //       setLoading(false);
+  //       setLinks(res.data);
+  //     })
+  //     .catch(() => {
+  //       alert(
+  //         "An error occured while trying to fetch the posts, please refresh the page"
+  //       );
+  //     });
+  // }
+  useEffect(() => {
+    // reloading();
+
+    console.log(token.token);
     getLink(token.token)
       .then((res) => {
         setLoading(false);
@@ -23,9 +38,6 @@ export default function Timeline() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-  }
-  useEffect(() => {
-    reloading();
   }, []);
 
   return (
