@@ -12,11 +12,7 @@ export default function RenderUserSearched({usersFiltered}) {
 
     const navigate = useNavigate();
 
-<<<<<<< HEAD
     return (usersFiltered.length===0 ? 
-=======
-    return (usersFiltered.length===0) ? 
->>>>>>> like
         <UserNotListed>
             <h2>No users found</h2>
         </UserNotListed>
@@ -26,12 +22,8 @@ export default function RenderUserSearched({usersFiltered}) {
             <img src={user.pictureUrl}/>
             <h1>{user.userName}</h1>
         </UserListed>
-<<<<<<< HEAD
     )
     )
-=======
-    );
->>>>>>> like
 };
 
 const UserListed = styled.div`
@@ -51,11 +43,7 @@ const UserListed = styled.div`
     }
 
     h1{
-<<<<<<< HEAD
         font-size: 19px ;
-=======
-        font-size :19px;
->>>>>>> like
         font-family: 'Lato';
         font-weight: 400;
         color: #515151;
@@ -64,11 +52,7 @@ const UserListed = styled.div`
     }
 
     h2{
-<<<<<<< HEAD
         font-size: 19px;
-=======
-        font-size :19px;
->>>>>>> like
         font-family: 'Lato';
         font-weight: 400;
         color: #515151;
@@ -111,7 +95,3 @@ const UserNotListed = styled.div`
     }
 `
 
-<<<<<<< HEAD
-=======
-
->>>>>>> like
