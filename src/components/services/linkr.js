@@ -1,5 +1,6 @@
 import axios from "axios";
 
+//const BASE_URL = "https://linkr007.herokuapp.com"
 const BASE_URL = "http://localhost:4000";
 
 function postLink(link, postAuth) {
@@ -12,6 +13,11 @@ function getLink(token) {
     const promise = axios.get(`${BASE_URL}/timeline`, header);
     return promise;
 };
+
+function deleteLink(linkId, postAuth) {
+  const promise = axios.delete(`${BASE_URL}/deleteTimeline/${linkId}`, postAuth);
+  return promise;
+}
 
 function postCreat(obj){
     const promise = axios.post(`${BASE_URL}/signup`,obj);
@@ -55,6 +61,7 @@ export {
   postDisLike,
   postLink,
   getLink,
+  deleteLink,
   getUserValidation,
   postLogin,
   postCreat,

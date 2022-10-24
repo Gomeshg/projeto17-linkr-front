@@ -12,7 +12,7 @@ export default function Timeline() {
   const [links, setLinks] = useState([]);
   const token = JSON.parse(localStorage.getItem("linkr"));
 
-  function reloading() {
+  async function reloading() {
     getLink(token.token)
       .then((res) => {
         setLoading(false);
