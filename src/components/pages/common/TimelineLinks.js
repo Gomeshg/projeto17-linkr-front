@@ -23,12 +23,10 @@ export default function TimelineLinks(links) {
 
     useEffect(
         () =>
-            async function getMetadata() {
-                const { status, data, response } = await mql(links.links.url);
-                console.log(data);
-                setMetadata(data);
-            }
-        ,
+          async function getMetadata() {
+            const { status, data, response } = await mql(links.links.url);
+            setMetadata(data);
+          },
         [links.links.url]
 
     );
