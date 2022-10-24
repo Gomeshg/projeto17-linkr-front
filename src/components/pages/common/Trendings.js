@@ -26,7 +26,7 @@ export default function Trendings() {
         {trendings !== null
           ? trendings.map((item, index) => (
               <Link to={`/hashtag/${item.tag}`}>
-                <ReactHashtag>{`#${item.tag}`}</ReactHashtag> 
+                <ReactHashtag>{`#${item.tag}`}</ReactHashtag>
                 {/* <Hashtag key={index}># {item.tag}</Hashtag> */}
               </Link>
             ))
