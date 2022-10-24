@@ -27,16 +27,21 @@ export default function Enter() {
             email: loginDate.email,
             password: loginDate.password
         }
+        console.log(obj , " OLS")
+
         postLogin(obj).catch(err).then(sucess);
 
     }
     function sucess(value) {
         localStorage.setItem('linkr', JSON.stringify(value.data));
         setUser(value.data);
+        console.log(value , " OLS")
         getUserValidation(value.data.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') }).catch(err)
 
     }
     function err(value) {
+        console.log(value , " OLS")
+
         setBoolean(boolean);
         return alert(value.response.statusText);
     }

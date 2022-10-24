@@ -2,9 +2,24 @@ import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import mql from "@microlink/mql";
 import { useEffect, useState } from "react";
+import { postDisLike, postLike } from "../../services/linkr";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css'
+
 
 export default function TimelineLinks(links) {
+    const [likes, setLikes] = useState({});
     const [metadata, setMetadata] = useState({});
+
+    const token = JSON.parse(localStorage.getItem('linkr'))
+    let name = [];
+    let tippName;
+
+    useEffect(() => {
+
+        tippiString()
+
+    }, [])
 
     useEffect(
         () =>
@@ -13,15 +28,64 @@ export default function TimelineLinks(links) {
             setMetadata(data);
           },
         [links.links.url]
+
     );
+
+
+    function tippiString(sum) {
+
+
+        name = likes.list ? likes.list.filter(value => value !== links.links.userName) : links.links.likeUser.filter(value => value !== links.links.userName)
+
+        tippName = name.join(' e ') + ' and other x peoples'
+        if (name.length === 1) {
+            tippName =  name.join(' e ') + " like this"
+        }
+        if (name.length === 0) {
+            tippName =  "like this" 
+        }
+
+        if (likes.list ? !likes.boolean : links.boolean) {
+            name = likes.list ? likes.list.filter((value, i) => value !== links.links.userName && i < 2) : links.links.likeUser.filter((value, i) => value !== links.links.userName && i < 2)
+            tippName = 'You , ' + name[0] + ' and other x peoples'
+
+            if (name.length ===0 ) {
+                tippName = 'You liked'
+            }
+        }
+
+        setLikes({ ...likes, name: tippName, boolean: likes.list ? !likes.boolean : links.boolean , list: links.links.likeUser, cont: likes.list ? sum : Number(links.links.likes) })
+    }
+
+    function like() {
+        console.log(links.links)
+        postLike({
+            id: links.links.id,
+        },
+            token.token
+        ).catch((value) => console.log(value))
+        tippiString(likes.cont + 1)
+    }
+    function dislike() {
+        console.log(links.links)
+        postDisLike({
+            linkId: links.links.id
+        },
+            token.token
+        ).catch((value) => console.log(value))
+        tippiString(likes.cont - 1)
+    }
+
 
     return (
         <TimelineLinksStyle>
             <div className="userIconNLikesColumn">
                 <img src={links.links.pictureUrl} alt="idoso nervoso" className="profileIcon" ></img>
-                <h3><AiOutlineHeart className="icon" /></h3>
-                {/* <h3><AiFillHeart className="icon" /></h3> */}
-                <h3 className="likes">{links.links.likes} likes</h3>
+                {likes.boolean ? <h3 onClick={dislike} ><AiFillHeart className="icon" color="red" /></h3>
+                    : <h3 onClick={like} ><AiOutlineHeart className="icon" /></h3>}
+                <Tippy content={likes.name}>
+                    <h3 className="likes" >{likes.list ? likes.cont : links.links.likes} likes</h3>
+                </Tippy>
             </div>
 
             <div>
@@ -51,6 +115,8 @@ const TimelineLinksStyle = styled.div`
     padding: 15px;
     word-wrap: break-word;
     overflow: auto;
+
+    
     
 .userIconNLikesColumn {
     width: 50px;
