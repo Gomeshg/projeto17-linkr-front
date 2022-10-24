@@ -33,17 +33,6 @@ export default function Timeline() {
       <Content>
         <Left>
           <LinkShare />
-          {loading ? (
-            <h3 className="noLinks">Loading...</h3>
-          ) : (
-            [
-              links.lenght === 0 ? (
-                <h3 className="noLinks">There are no posts yet</h3>
-              ) : (
-                links.map((links) => <TimelineLinks links={links} />)
-              ),
-            ]
-          )}
 
           {loading ? (
             <h3 className="noLinks">Loading...</h3>
@@ -56,6 +45,18 @@ export default function Timeline() {
               ),
             ]
           )}
+
+          {/* {loading ? (
+            <h3 className="noLinks">Loading...</h3>
+          ) : (
+            [
+              links.lenght === 0 ? (
+                <h3 className="noLinks">There are no posts yet</h3>
+              ) : (
+                links.map((links) => <TimelineLinks links={links} />)
+              ),
+            ]
+          )} */}
         </Left>
 
         <Right>
