@@ -47,7 +47,7 @@ export default function TimelineLinks(links, boolean) {
         if (likes.list ? !likes.boolean : links.boolean) {
             name = likes.list ? likes.list.filter((value, i) => value !== links.links.userName && i < 2) : links.links.likeUser.filter((value, i) => value !== links.links.userName && i < 2)
             tippName = 'You , ' + name[0] + ' and other x peoples'
-
+            console.log(name)
             if (name.length ===0 ) {
                 tippName = 'You liked'
             }
