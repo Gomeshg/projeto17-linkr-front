@@ -10,9 +10,9 @@ import Trendings from "../common/Trendings";
 export default function Timeline() {
     const [loading, setLoading] = useState(true);
     const [links, setLinks] = useState([]);
-    const token = JSON.parse(localStorage.getItem('linkr'))
+    const token = JSON.parse(localStorage.getItem('linkr'));
 
-      function reloading(){
+    async function reloading(){
         getLink(token.token).then((res) => {
         setLoading(false);
         setLinks(res.data);

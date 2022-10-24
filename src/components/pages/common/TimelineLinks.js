@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { BiTrash } from 'react-icons/bi';
 import mql from "@microlink/mql";
 import { useEffect, useState } from "react";
 import { postDisLike, postLike } from "../../services/linkr";
@@ -7,7 +8,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'
 
 
-export default function TimelineLinks(links) {
+export default function TimelineLinks(links, boolean) {
     const [likes, setLikes] = useState({});
     const [metadata, setMetadata] = useState({});
 
@@ -15,22 +16,20 @@ export default function TimelineLinks(links) {
     let name = [];
     let tippName;
 
+    async function getMetadata() {
+        const { status, data, response } = await mql(links.links.url);
+        setMetadata(data);
+    };
+
+    useEffect(() => {
+        getMetadata()
+     }, [metadata, links]);
+
     useEffect(() => {
 
         tippiString()
 
     }, [])
-
-    useEffect(
-        () =>
-          async function getMetadata() {
-            const { status, data, response } = await mql(links.links.url);
-            setMetadata(data);
-          },
-        [links.links.url]
-
-    );
-
 
     function tippiString(sum) {
 
@@ -90,6 +89,7 @@ export default function TimelineLinks(links) {
 
             <div>
                 <h2 className="username" >{links.links.userName}</h2>
+                <BiTrash className="icon" />
                 <h3>{links.links.text}</h3>
                 <a href={links.links.url} target="_blank" rel="noopener noreferrer" className="metadataBox" >
                     <div className="metadataInfo">
