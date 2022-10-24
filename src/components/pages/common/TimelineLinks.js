@@ -10,7 +10,6 @@ export default function TimelineLinks(links) {
         () =>
           async function getMetadata() {
             const { status, data, response } = await mql(links.links.url);
-            console.log(data);
             setMetadata(data);
           },
         [links.links.url]
