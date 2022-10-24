@@ -40,12 +40,6 @@ function getUserValidation(token) {
   return promise;
 }
 
-// function getUserValidation(token) {
-//   const header = { headers: { Authorization: `Bearer ${token}` } };
-//   const promise = axios.get(`${BASE_URL}/signvalid`, header);
-//   return promise;
-// }
-
 function getTrending() {
   const promise = axios.get(`${BASE_URL}/trending`);
   return promise;
