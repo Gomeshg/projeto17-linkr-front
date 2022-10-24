@@ -12,7 +12,7 @@ export default function Header() {
     const navigat = useNavigate()
 
     function logout() {
-        localStorage.clear()
+        localStorage.clear('linkr')
         setUser({})
         navigat('/');
 

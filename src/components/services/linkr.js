@@ -7,8 +7,9 @@ function postLink(link, postAuth) {
     return promise;
 };
 
-function getLink() {
-    const promise = axios.get(`${BASE_URL}/timeline`);
+function getLink(token) {
+    const header = { headers: { Authorization: `Bearer ${token}`}}
+    const promise = axios.get(`${BASE_URL}/timeline`, header);
     return promise;
 };
 
@@ -28,8 +29,21 @@ function getUserValidation(token){
     return promise;    
 }
 
+function postDisLike(body ,token){
+    const header = { headers: { Authorization: `Bearer ${token}`} }
+    const promise = axios.post(`${BASE_URL}/dislike`,body ,header);
+    return promise;    
+}
+
+function postLike(body ,token){
+    const header = { headers: { Authorization: `Bearer ${token}`} }
+    const promise = axios.post(`${BASE_URL}/like`,body,header);
+    return promise;    
+}
 
 export {
+    postLike,
+    postDisLike,
     postLink,
     getLink,
     getUserValidation,

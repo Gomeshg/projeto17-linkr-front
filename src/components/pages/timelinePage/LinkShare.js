@@ -5,9 +5,9 @@ import UserContext from "../../../parts/UserContext";
 import { postLink } from "../../services/linkr";
 
 export default function LinkShare() {
-    const [loading, setLoading] = useState(true);
     const { user, setUser } = useContext(UserContext);
 
+    const [loading, setLoading] = useState(true);
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
 
