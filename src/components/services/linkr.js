@@ -14,6 +14,11 @@ function getLink(token) {
     return promise;
 };
 
+function deleteLink(linkId, postAuth) {
+  const promise = axios.delete(`${BASE_URL}/deleteTimeline/${linkId}`, postAuth);
+  return promise;
+}
+
 function postCreat(obj){
     const promise = axios.post(`${BASE_URL}/signup`,obj);
     return promise;
@@ -56,6 +61,7 @@ export {
   postDisLike,
   postLink,
   getLink,
+  deleteLink,
   getUserValidation,
   postLogin,
   postCreat,
