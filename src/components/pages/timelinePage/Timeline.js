@@ -23,12 +23,11 @@ export default function Timeline() {
      useEffect(() => {
        reloading()
     }, []);
-
     
   return (
     <TimelineScreen>
       <Header />
-
+      
       <div className="pageTitle"> timeline </div>
 
                 <Content>
