@@ -8,25 +8,14 @@ function postLink(link, postAuth) {
 }
 
 function getLink(token) {
-  const header = { headers: { Authorization: `Bearer ${token}`}}
+    const header = { headers: { Authorization: `Bearer ${token}`}}
     const promise = axios.get(`${BASE_URL}/timeline`, header);
-  return promise;
-
-}
+    return promise;
+};
 
 function postCreat(obj){
     const promise = axios.post(`${BASE_URL}/signup`,obj);
     return promise;
-}
-
-function getLink() {
-  const promise = axios.get(`${BASE_URL}/timeline`);
-  return promise;
-}
-
-function postCreat(obj) {
-  const promise = axios.post(`${BASE_URL}/signup`, obj);
-  return promise;
 }
 
 function postLogin(obj) {
@@ -45,108 +34,29 @@ function postLike(body ,token){
     const promise = axios.post(`${BASE_URL}/like`,body,header);
     return promise;    
 }
-
 function getUserValidation(token) {
   const header = { headers: { Authorization: `Bearer ${token}` } };
   const promise = axios.get(`${BASE_URL}/signvalid`, header);
   return promise;
 }
 
+// function getUserValidation(token) {
+//   const header = { headers: { Authorization: `Bearer ${token}` } };
+//   const promise = axios.get(`${BASE_URL}/signvalid`, header);
+//   return promise;
+// }
+
 function getTrending() {
   const promise = axios.get(`${BASE_URL}/trending`);
   return promise;
 }
 
-
 function getLinksFilteredByHashtag(hashtag) {
   const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`);
   return promise;
 }
 
-function postDisLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/dislike`,body ,header);
-    return promise;    
-
-}
-
-function postLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/like`,body,header);
-    return promise;    
-}
-function getLinksFilteredByHashtag(hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`);
-  return promise;
-
-}
-
-function postDisLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/dislike`,body ,header);
-    return promise;    
-}
-
-function postLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/like`,body,header);
-    return promise;    
-}
-function getLinksFilteredByHashtag(hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`);
-  return promise;
-}
-
-function getLinksFilteredByHashtag(hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`);
-  return promise;
-}
-function postDisLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/dislike`,body ,header);
-    return promise;    
-}
-
-
-function getLinksFilteredByHashtag(hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`);
-  return promise;
-}
-function postDisLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/dislike`,body ,header);
-    return promise;    
-}
-
-function postLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/like`,body,header);
-    return promise;    
-}
-
-function postLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/like`,body,header);
-    return promise;    
-}
-
-function getLinksFilteredByHashtag(hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`);
-  return promise;
-}
-function postDisLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/dislike`,body ,header);
-    return promise;    
-}
-
-function postLike(body ,token){
-    const header = { headers: { Authorization: `Bearer ${token}`} }
-    const promise = axios.post(`${BASE_URL}/like`,body,header);
-    return promise;    
-}
-
-export { 
+export {
   postLike,
   postDisLike,
   postLink,
