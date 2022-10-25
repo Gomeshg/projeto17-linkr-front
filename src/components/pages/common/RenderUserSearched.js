@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 export default function RenderUserSearched({ usersFiltered }) {
+
   function accessUserPage(id) {
     navigate(`/user/${id}`);
     window.location.reload();
@@ -45,6 +46,7 @@ const UserListed = styled.div`
     font-weight: 400;
     color: #515151;
     position: absolute;
+    margin-top: 10px;
     left: 60px;
   }
 

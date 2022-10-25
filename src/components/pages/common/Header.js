@@ -29,18 +29,18 @@ export default function Header() {
         setboolean(!boolean)
     }
 
-    // async function getUsersFiltered(usernameSearched){
+    async function getUsersFiltered(usernameSearched){
 
-    //     const body = {partOfUsername:usernameSearched};
+        const body = {partOfUsername:usernameSearched};
 
-    //     try {
-    //         const res = await axios.get(`http://localhost:4000/users/search/${usernameSearched}`);
-    //         setUsersFiltered(res.data)
-    //     } catch(err) {
-    //         console.error(err);
-    //         alert("Erro ao carregar! Consulte os logs.")
-    //     }
-    // }
+        try {
+            const res = await axios.get(`http://localhost:4000/users/search/${usernameSearched}`);
+            setUsersFiltered(res.data)
+        } catch(err) {
+            console.error(err);
+            alert("Erro ao carregar! Consulte os logs.")
+        }
+    }
 
     function openSearchBar(e){
 
@@ -48,7 +48,7 @@ export default function Header() {
 
         if (usernameSearched.length>=3){
             setOpenSearchResults(true);
-     //       getUsersFiltered(usernameSearched);
+            getUsersFiltered(usernameSearched);
         } else {
             setOpenSearchResults(false);
             setUsersFiltered([])
@@ -56,9 +56,9 @@ export default function Header() {
 
     }
 
-
-
-
+    function goToTimeline(){
+        navigat('/');
+    }
 
     return (
         openSearchResults ? 
@@ -84,7 +84,7 @@ export default function Header() {
         </HeaderStyle>
         :
         <HeaderStyle boolean={boolean}>
-        <h1 className="linkrTitle" >linkr</h1>
+        <h1 className="linkrTitle" onClick={goToTimeline}>linkr</h1>
         <Searchbar>
         <input placeholder="Search for people" onChange={openSearchBar} />
             <AiOutlineSearch class="searchIcon" />
@@ -127,6 +127,13 @@ const HeaderStyle = styled.div`
     height:${(props) => props.boolean ? "110px" : "75px"} ;
     border-radius: 0px 0px 0px 20px ;
 
+    svg {
+        cursor: pointer;
+    }
+
+    img {
+        cursor: pointer;
+    }
 
 }
 .scritBox{
@@ -135,6 +142,7 @@ const HeaderStyle = styled.div`
     font-weight: 700;
     font-size: 17px;
     color: #FFFFFF;
+    cursor: pointer;
 }
 
 span {
@@ -147,6 +155,7 @@ span {
     font-size: 49px;
     color: #ffffff;
     margin-left: 30px;
+    cursor: pointer;
 }
 .profileIcon {
     height: 55px;
