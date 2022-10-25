@@ -10,7 +10,7 @@ import CreatCont from "./pages/initial/CreatCont";
 import Enter from "./pages/initial/Enter";
 import Timeline from "./pages/timelinePage/Timeline";
 import Hashtag from "./pages/hashtagPage/Hashtag";
-import UserPage from "./pages/common/RenderUserSearched";
+import UserPage from "./pages/userPage/UserPage";
 import { getUserValidation } from "./services/linkr";
 
 
@@ -37,6 +37,7 @@ export default function App() {
               <Route path="/signup" element={<CreatCont />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/hashtag/:hashtag" element={<Hashtag />} />
+              <Route path="/user/:id" element={<UserPage />} />
               {/* <Route path="/user/:id" element={<UserPage />} /> */}
               {/*<Route path='/Novo-recebido' element={<NewValue optional={true} />} /> 
                             <Route path='/Editar-entrada' element={<ModifiValue optional={true} />} /> 
