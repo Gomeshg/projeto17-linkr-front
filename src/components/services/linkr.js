@@ -19,6 +19,11 @@ function deleteLink(linkId, postAuth) {
   return promise;
 }
 
+function updateLink(textEdited, linkId, postAuth) {
+  const promise = axios.put(`${BASE_URL}/updateTimeline/${linkId}`, textEdited, postAuth);
+  return promise;
+}
+
 function postCreat(obj){
     const promise = axios.post(`${BASE_URL}/signup`,obj);
     return promise;
@@ -75,6 +80,7 @@ export {
   postLink,
   getLink,
   deleteLink,
+  updateLink,
   getUserValidation,
   postLogin,
   postCreat,
