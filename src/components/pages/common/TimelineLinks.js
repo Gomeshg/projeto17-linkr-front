@@ -8,7 +8,9 @@ import UserContext from "../../../parts/UserContext";
 import { postDisLike, postLike, deleteLink } from "../../services/linkr";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-export default function TimelineLinks(links, boolean) {
+import { useNavigate } from "react-router-dom";
+
+export default function TimelineLinks(links) {
   const { user, setUser } = useContext(UserContext);
   const [deleteLinkScreen, setDeleteLinkScreen] = useState(
     "whiteBackground hidden"
@@ -19,21 +21,26 @@ export default function TimelineLinks(links, boolean) {
   const token = JSON.parse(localStorage.getItem("linkr"));
   let name = [];
   let tippName;
+  const navigate = useNavigate();
   async function getMetadata() {
     const { status, data, response } = await mql(links.links.url);
     setMetadata(data);
   }
   useEffect(() => {
     getMetadata();
-  }, [metadata, links]);
+  }, []);
+
   useEffect(() => {
+    getMetadata();
     tippiString();
   }, []);
   function tippiString(sum) {
     name = likes.list
       ? likes.list.filter((value) => value !== links.links.userName)
       : links.links.likeUser.filter((value) => value !== links.links.userName);
-    tippName = name.join(" e ") + " and other x peoples";
+    tippName = !name[1]
+      ? name[0] + " and other x peoples"
+      : name[0] + " , " + name[1] + " and other x peoples";
     if (name.length === 1) {
       tippName = name.join(" e ") + " like this";
     }
@@ -48,10 +55,13 @@ export default function TimelineLinks(links, boolean) {
         : links.links.likeUser.filter(
             (value, i) => value !== links.links.userName && i < 2
           );
-      tippName = "You , " + name[0] + " and other x peoples";
-      console.log(name);
+      tippName = "You , " + name[0] + " , " + name[1] + " and other x peoples";
+
       if (name.length === 0) {
         tippName = "You liked";
+      }
+      if (name.length === 1) {
+        tippName = "You , " + name[0] + " liked";
       }
     }
     setLikes({
@@ -63,7 +73,6 @@ export default function TimelineLinks(links, boolean) {
     });
   }
   function like() {
-    console.log(links.links);
     postLike(
       {
         id: links.links.id,
@@ -73,7 +82,6 @@ export default function TimelineLinks(links, boolean) {
     tippiString(likes.cont + 1);
   }
   function dislike() {
-    console.log(links.links);
     postDisLike(
       {
         linkId: links.links.id,
@@ -91,7 +99,6 @@ export default function TimelineLinks(links, boolean) {
   function deleteThisLink() {
     setLoading(false);
     const linkId = links.links.id;
-    console.log(linkId);
     const postAuth = { headers: { Authorization: "Bearer " + token.token } };
     deleteLink(linkId, postAuth)
       .then(() => {
@@ -101,6 +108,8 @@ export default function TimelineLinks(links, boolean) {
         alert("Houve um erro ao deletar seu link");
       });
   }
+
+  console.log(links);
   return (
     <TimelineLinksStyle>
       <div className={deleteLinkScreen}>
@@ -126,6 +135,7 @@ export default function TimelineLinks(links, boolean) {
       </div>
       <div className="userIconNLikesColumn">
         <img
+          onClick={() => navigate(`/user/${links.links.userId}`)}
           src={links.links.pictureUrl}
           alt="idoso nervoso"
           className="profileIcon"
@@ -147,7 +157,12 @@ export default function TimelineLinks(links, boolean) {
       </div>
       <div>
         <div className="nameNIcons">
-          <h2 className="username">{links.links.userName}</h2>
+          <h2
+            className="username"
+            onClick={() => navigate(`/user/${links.links.userId}`)}
+          >
+            {links.links.userName}
+          </h2>
           {links.links.userName === user.userName ? (
             <div>
               <BsPencilSquare className="miniIcon" />
@@ -255,10 +270,12 @@ const TimelineLinksStyle = styled.div`
     width: 50px;
     margin-bottom: 20px;
     border-radius: 50%;
+    cursor: pointer;
   }
   .icon {
     height: 25px;
     width: 25px;
+    cursor: pointer;
   }
   .miniIcon {
     margin-left: 10px;
@@ -328,6 +345,7 @@ const TimelineLinksStyle = styled.div`
   .nameNIcons {
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
   }
   .loading {
     font-family: "Lato", sans-serif;
