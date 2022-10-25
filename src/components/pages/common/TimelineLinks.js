@@ -2,29 +2,37 @@ import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { BsPencilSquare } from "react-icons/bs";
+import { SlBubbles } from "react-icons/sl";
 import mql from "@microlink/mql";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
 import { postDisLike, postLike, deleteLink, updateLink } from "../../services/linkr";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import CommentsBox from "./CommentsBox";
 
 export default function TimelineLinks(links, boolean) {
   const { user, setUser } = useContext(UserContext);
+
+  // Metadata
+  const [metadata, setMetadata] = useState({});
+
   // Delete
   const [deleteLinkScreen, setDeleteLinkScreen] = useState(
     "whiteBackground hidden"
   );
-  //Edit
-  const [editBoolean, setEditBoolean] = useState(true);  //////MUDAR AQUI ------------------------------
+
+  // Edit
+  const [editBoolean, setEditBoolean] = useState(true);
   const [newText, setNewText] = useState(links.links.text);
 
   const [likes, setLikes] = useState({});
-  const [metadata, setMetadata] = useState({});
   const [loading, setLoading] = useState(true);
   const token = JSON.parse(localStorage.getItem("linkr"));
   let name = [];
   let tippName;
+
+  //Logica para Metadata ---------------------------------------------
   async function getMetadata() {
     const { status, data, response } = await mql(links.links.url);
     setMetadata(data);
@@ -35,6 +43,8 @@ export default function TimelineLinks(links, boolean) {
   useEffect(() => {
     tippiString();
   }, []);
+
+
   function tippiString(sum) {
     name = likes.list
       ? likes.list.filter((value) => value !== links.links.userName)
@@ -110,7 +120,6 @@ export default function TimelineLinks(links, boolean) {
   }
 
   //Logica pra Editar um Link---------------------
-
   useEffect(() => {
       const keyDownHandler = event => {
         console.log('User pressed: ', event.key);
@@ -190,6 +199,10 @@ export default function TimelineLinks(links, boolean) {
             {likes.list ? likes.cont : links.links.likes} likes
           </h3>
         </Tippy>
+        <SlBubbles className="icon" />
+        <h3 className="likes">
+          0 comments
+        </h3>
       </div>
       <div>
         <div className="nameNIcons">
@@ -231,6 +244,7 @@ export default function TimelineLinks(links, boolean) {
           <img src={metadata.image?.url} alt="" className="metadataImage" />
         </a>
       </div>
+      <CommentsBox/>
     </TimelineLinksStyle>
   );
 }
@@ -318,6 +332,8 @@ const TimelineLinksStyle = styled.div`
   .icon {
     height: 25px;
     width: 25px;
+    margin-top: 8px;
+    cursor: pointer;
   }
   .miniIcon {
     margin-left: 10px;
@@ -328,7 +344,8 @@ const TimelineLinksStyle = styled.div`
   .likes {
     font-family: "Lato", sans-serif;
     font-weight: 400;
-    font-size: 11px;
+    font-size: 9px;
+    margin-top: 5px;
   }
   .username {
     font-family: "Lato", sans-serif;
