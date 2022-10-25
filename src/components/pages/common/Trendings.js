@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getTrending } from "../../services/linkr";
-import ReactHashtag from "@mdnm/react-hashtag";
+// import ReactHashtag from "@mdnm/react-hashtag";
 
 export default function Trendings() {
   const [trendings, setTrendings] = useState(null);
@@ -26,8 +26,8 @@ export default function Trendings() {
         {trendings !== null
           ? trendings.map((item, index) => (
               <Link to={`/hashtag/${item.tag}`}>
-                <ReactHashtag>{`#${item.tag}`}</ReactHashtag> 
-                {/* <Hashtag key={index}># {item.tag}</Hashtag> */}
+                {/* <ReactHashtag>{`#${item.tag}`}</ReactHashtag> */}
+                <Hashtag key={index}># {item.tag}</Hashtag>
               </Link>
             ))
           : ""}
@@ -78,10 +78,10 @@ const Title = styled.p`
   font-family: sans-serif;
 `;
 
-// const Hashtag = styled.p`
-//   font-size: 15px;
-//   color: rgb(255, 255, 255);
-//   font-weight: 400;
+const Hashtag = styled.p`
+  font-size: 15px;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
 
-//   font-family: sans-serif;
-// `;
+  font-family: sans-serif;
+`;
