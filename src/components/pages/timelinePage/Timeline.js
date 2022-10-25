@@ -25,9 +25,7 @@ export default function Timeline() {
   //     });
   // }
   useEffect(() => {
-    // reloading();
 
-    console.log(token.token);
     getLink(token.token)
       .then((res) => {
         setLoading(false);
@@ -40,6 +38,8 @@ export default function Timeline() {
       });
   }, []);
 
+  console.log(links);
+  
   return (
     <TimelineScreen>
       <Header />

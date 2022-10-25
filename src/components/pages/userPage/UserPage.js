@@ -5,24 +5,24 @@ import { getLinksFilteredByUser, getUserName} from "../../services/linkr";
 import { useParams } from "react-router-dom";
 
 import Header from "../common/Header";
-import UserProfileLinks from "../common/diffUserLinks.js";
+//import UserProfileLinks from "../common/diffUserLinks.js";
 import Trendings from "../common/Trendings";
+import TimelineLinks from "../common/TimelineLinks";
 
 export default function UserPage(){
-
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext)
     const [isUserProfile, setIsUserProfile] = useState(false);
     const [links, setLinks] = useState([]);
     const [username, setUsername] = useState([]);
 
     const params = useParams();
-    const id = params.id;
+    const id = Number(params.id);
 
     const token = JSON.parse(localStorage.getItem("linkr"));
 
     function isItUserProfile(){
-        if (id==user.id){
+        if (id===user.id){
             setIsUserProfile(true);
         } else {
             setIsUserProfile(false);
@@ -30,9 +30,7 @@ export default function UserPage(){
     }
 
     useEffect(() => {
-
         isItUserProfile()
-
         getLinksFilteredByUser(token.token,id)
           .then((res) => {
             setLoading(false);
@@ -56,8 +54,8 @@ export default function UserPage(){
           );
         });
         
-        console.log(links);
       }, []);
+      console.log(links, params);
 
     return (
     <TimelineScreen>
@@ -65,21 +63,24 @@ export default function UserPage(){
       <div className="pageTitle"> {username.length===0?"Fulano":username.userName}'s posts </div>
       <Content>
         <Left>
-          {loading ? (
-            <h3 className="noLinks">Loading...</h3>
-          ) : (
-            [
-              links.lenght === 0 ? (
-                <h3 className="noLinks">There are no posts yet</h3>
-              ) : (
-                links.map((link => (
-                    <UserProfileLinks
-                    isUserProfile={isUserProfile} 
-                    link={link}/>
-                ))
-              )),
-            ]
-          )}
+        {loading ? (
+                    <h3 className="noLinks">Loading...</h3>
+                  ) : (
+                    [
+                      links.lenght === 0 ? (
+                        <h3 className="noLinks">There are no posts yet</h3>
+                      ) : (
+                        links.map((links)=>{
+                            return(
+                            <TimelineLinks
+                            links={links}
+                            boolean={links.boolean ? links.boolean : false}
+                            />)
+                          }
+                        )
+                      ),
+                    ]
+                  )}
         </Left>
         <Right>
           <Trendings />
