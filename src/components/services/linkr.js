@@ -56,6 +56,19 @@ function getLinksFilteredByHashtag(hashtag) {
   return promise;
 }
 
+function getLinksFilteredByUser(token,userId) {
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.get(`${BASE_URL}/userPosts/${userId}`, header);
+  return promise;
+};
+
+function getUserName(token,userId) {
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.get(`${BASE_URL}/userInfo/${userId}`, header);
+  return promise;
+};
+
+
 export {
   postLike,
   postDisLike,
@@ -67,4 +80,6 @@ export {
   postCreat,
   getTrending,
   getLinksFilteredByHashtag,
+  getLinksFilteredByUser,
+  getUserName
 };
