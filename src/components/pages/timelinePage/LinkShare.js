@@ -43,24 +43,27 @@ export default function LinkShare() {
     };
 
     const hashtags = getHashtags(link.text);
-    hashtags.forEach((hashtag) => {
-      const objHashtag = {
-        hashtag: hashtag,
-      };
+    // hashtags.forEach((hashtag) => {
+    //   const objHashtag = {
+    //     hashtag: hashtag,
+    //   };
 
-      postHashtag(objHashtag)
-        .then()
-        .catch((e) => {
-          alert("Houve um erro para inserir as hashtags");
-        });
-    });
+    //   postHashtag(objHashtag)
+    //     .then(res => {
+
+    //     })
+    //     .catch((e) => {
+    //       alert("Houve um erro para inserir as hashtags");
+    //     });
+    // });
 
     if (validate === true) {
       setLoading(false);
 
       postLink(link, postAuth)
-        .then(() => {
-          window.location.reload(false);
+        .then((res) => {
+          console.log(res.data);
+          // window.location.reload(false);
         })
         .catch((error) => {
           alert("Houve um erro ao publicar seu link");

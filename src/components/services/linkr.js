@@ -64,6 +64,10 @@ function postHashtag(hashtag) {
   return promise;
 }
 
+function getLastLinkId() {
+  const promise = axios.get(`${BASE_URL}/lastLink`);
+}
+
 export {
   postLike,
   postDisLike,
