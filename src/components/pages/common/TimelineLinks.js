@@ -1,29 +1,40 @@
-
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { BsPencilSquare } from "react-icons/bs";
+import { SlBubbles } from "react-icons/sl";
 import mql from "@microlink/mql";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
-import { postDisLike, postLike, deleteLink } from "../../services/linkr";
+import { postDisLike, postLike, deleteLink, updateLink } from "../../services/linkr";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import CommentsBox from "./CommentsBox";
 import { useNavigate } from "react-router-dom";
 
-
-export default function TimelineLinks(links) {
+export default function TimelineLinks(links, boolean) {
   const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate()
+
+  // Metadata
+  const [metadata, setMetadata] = useState({});
+
+  // Delete
   const [deleteLinkScreen, setDeleteLinkScreen] = useState(
    "whiteBackground hidden"
   );
+
+  // Edit
+  const [editBoolean, setEditBoolean] = useState(true);
+  const [newText, setNewText] = useState(links.links.text);
+
   const [likes, setLikes] = useState({});
-  const [metadata, setMetadata] = useState({});
   const [loading, setLoading] = useState(true);
   const token = JSON.parse(localStorage.getItem("linkr"));
   let name = [];
   let tippName;
-  const navigate = useNavigate()
+
+  //Logica para Metadata ---------------------------------------------
   async function getMetadata() {
     const { status, data, response } = await mql(links.links.url);
     setMetadata(data);
@@ -36,6 +47,8 @@ export default function TimelineLinks(links) {
     getMetadata()
     tippiString();
   }, []);
+
+
   function tippiString(sum) {
     name = likes.list
       ? likes.list.filter((value) => value !== links.links.userName)
@@ -92,6 +105,8 @@ export default function TimelineLinks(links) {
     ).catch((value) => console.log(value));
     tippiString(likes.cont - 1);
   }
+
+  //Logica pra Deletar um Link---------------------
   function openDeleteScreen() {
     setDeleteLinkScreen("whiteBackground");
   }
@@ -109,11 +124,46 @@ export default function TimelineLinks(links) {
       .catch(() => {
         alert("Houve um erro ao deletar seu link");
       });
+  }
 
+  //Logica pra Editar um Link---------------------
+  useEffect(() => {
+      const keyDownHandler = event => {
+        console.log('User pressed: ', event.key);
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          setNewText(links.links.text);
+          setEditBoolean(true);
+        }
+      };
+      document.addEventListener('keydown', keyDownHandler);
+      return () => {
+        document.removeEventListener('keydown', keyDownHandler);
+      };
+    }, []);
+
+  async function editText(e) {
+    const postAuth = { headers: { Authorization: "Bearer " + token.token } };
+    const linkId = links.links.id;
+    const textEdited = {
+      text: newText
+    };
+    
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setLoading(false);
+
+      await updateLink(textEdited, linkId, postAuth).then(() => {
+        setLoading(true);
+        setEditBoolean(true);
+      }).catch((err) => {
+        setLoading(true);
+        alert("Houve um erro ao editar seu link");
+      });
     }
+  }
 
-console.log(links)
-    return (
+  return (
     <TimelineLinksStyle>
       <div className={deleteLinkScreen}>
         {!loading ? (
@@ -157,20 +207,37 @@ console.log(links)
             {likes.list ? likes.cont : links.links.likes} likes
           </h3>
         </Tippy>
+        <SlBubbles className="icon" />
+        <h3 className="likes">
+          0 comments
+        </h3>
       </div>
       <div>
         <div className="nameNIcons">
           <h2 className="username" onClick={() => navigate(`/user/${links.links.userId}`)}>{links.links.userName}</h2>
           {links.links.userName === user.userName ? (
             <div>
-              <BsPencilSquare className="miniIcon" />
+              <BsPencilSquare className="miniIcon" onClick={() => setEditBoolean(!editBoolean)} />
               <BiTrash className="miniIcon" onClick={openDeleteScreen} />
             </div>
           ) : (
             ""
           )}
         </div>
-        <h3>{links.links.text}</h3>
+        {editBoolean ? <h3>{newText}</h3>
+          : 
+          <form>
+            <textarea
+              autoFocus
+              onKeyPress={editText}
+              className="textArea"
+              placeholder="http://..."
+              type="text"
+              value={newText}
+              onChange={e => setNewText(e.target.value)}
+              disabled={(loading) ? "" : "disabled"}
+            />
+          </form>}
         <a
           href={links.links.url}
           target="_blank"
@@ -185,6 +252,7 @@ console.log(links)
           <img src={metadata.image?.url} alt="" className="metadataImage" />
         </a>
       </div>
+      <CommentsBox/>
     </TimelineLinksStyle>
   );
 }
@@ -273,17 +341,20 @@ const TimelineLinksStyle = styled.div`
   .icon {
     height: 25px;
     width: 25px;
+    margin-top: 8px;
     cursor: pointer;
   }
   .miniIcon {
     margin-left: 10px;
     height: 15px;
     width: 15px;
+    cursor: pointer;
   }
   .likes {
     font-family: "Lato", sans-serif;
     font-weight: 400;
-    font-size: 11px;
+    font-size: 9px;
+    margin-top: 5px;
   }
   .username {
     font-family: "Lato", sans-serif;
@@ -350,5 +421,14 @@ const TimelineLinksStyle = styled.div`
     font-weight: 700;
     font-size: 30px;
     color: #ffffff;
+  }
+  .textArea {
+    width: 500px;
+    border-radius: 7px;
+    padding: 5px;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #4c4c4c;
   }
 `;
