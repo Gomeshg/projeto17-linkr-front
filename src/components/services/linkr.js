@@ -73,8 +73,22 @@ function getUserName(token,userId) {
   return promise;
 };
 
+function postFollow(token,id) {
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.post(`${BASE_URL}/follow/${id}`,{}, header);
+  return promise;
+};
+
+function getFollow(token,id) {
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.get(`${BASE_URL}/follow/${id}`,header);
+  return promise;
+};
+
 
 export {
+  getFollow,
+  postFollow,
   postLike,
   postDisLike,
   postLink,
