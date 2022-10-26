@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
-import { getLinksFilteredByUser, getUserName} from "../../services/linkr";
+import { getLinksFilteredByUser, getUserName, postFollow,getFollow} from "../../services/linkr";
 import { useParams } from "react-router-dom";
 
 import Header from "../common/Header";
-//import UserProfileLinks from "../common/diffUserLinks.js";
 import Trendings from "../common/Trendings";
 import TimelineLinks from "../common/TimelineLinks";
 
@@ -15,6 +14,8 @@ export default function UserPage(){
     const [isUserProfile, setIsUserProfile] = useState(false);
     const [links, setLinks] = useState([]);
     const [username, setUsername] = useState([]);
+    const [follow, setFollow] = useState({boton:true, follower:false});
+    
 
     const params = useParams();
     const id = Number(params.id);
@@ -41,11 +42,10 @@ export default function UserPage(){
               "An error occured while trying to fetch the posts, please refresh the page"
             );
           });
-        
 
         getUserName(token.token, id)
         .then((res) => {
-            console.log(res.data[0].userName)
+            console.log(res.data)
             setUsername(res.data[0])
         })
         .catch(() => {
@@ -53,16 +53,26 @@ export default function UserPage(){
             "An error has occured while trying to fetch the posts, please refresh the page"
           );
         });
-        
-      }, []);
-      console.log(links, params);
+        getFollow(token.token, id).then(value=>{if(value.data.length>0)return setFollow({...follow,follower:true});})
 
+      }, []);
+function followers(){
+  console.log(follow)
+    if(follow.boton){
+        setFollow({...follow,boton:!follow.follower})
+        postFollow(token.token, id).then(()=>setFollow({boton:true, follower:!follow.follower})).catch(()=>{setFollow({boton:true, follower:!follow.follower});alert("Could not follow this user")})
+    }
+  }
     return (
     <TimelineScreen>
       <Header />
-      <div className="pageTitle"> {username.length===0?"Fulano":username.userName}'s posts </div>
-      <Content>
+        <div className="pageTitle"> {username.length===0? "" :username.userName}'s posts </div>  
+
+       <Content>
         <Left>
+          <div className="all">
+              {username.id !== id ? follow.follower ? <div className="follower" onClick={followers} >Unofollow</div> : <div className="follower" onClick={followers}>Follow</div> : ""}
+          </div>
         {loading ? (
                     <h3 className="noLinks">Loading...</h3>
                   ) : (
@@ -96,7 +106,21 @@ font-family: 'Lato', sans-serif;
 font-family: 'Oswald', sans-serif;
 font-family: 'Passion One', cursive;
  */
+ 
+  .all{
+    width: 100% ;
+    display: flex ;
+    justify-content: flex-end ;
+    padding: 10px ;
 
+  }
+   .follower{
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px ;
+    color: #ffffff;
+    cursor: pointer;
+
+  }
   .noLinks {
     display: flex;
     justify-content: center;
