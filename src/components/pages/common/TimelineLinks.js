@@ -6,7 +6,7 @@ import { SlBubbles } from "react-icons/sl";
 import mql from "@microlink/mql";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
-import { postDisLike, postLike, deleteLink, updateLink } from "../../services/linkr";
+import { postDisLike, postLike, deleteLink, updateLink, getCommentsCount } from "../../services/linkr";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import CommentsBox from "./CommentsBox";
@@ -33,6 +33,10 @@ export default function TimelineLinks(links, boolean) {
   const token = JSON.parse(localStorage.getItem("linkr"));
   let name = [];
   let tippName;
+
+  //Comment
+  const [commentBoolean, setCommentBoolean] = useState(true);
+  const [commentCount, setCommentCount] = useState(0);
 
   //Logica para Metadata ---------------------------------------------
   async function getMetadata() {
@@ -162,97 +166,109 @@ export default function TimelineLinks(links, boolean) {
     }
   }
 
+  //Logica pra contar os comentarios -------------------------------
+  useEffect(() => {
+    getCommentsCount(links.links.id).then((res) => {
+      setCommentCount(res.data[0].comments)
+    }).catch();
+  }, [commentCount]);
+
   return (
-    <TimelineLinksStyle>
-      <div className={deleteLinkScreen}>
-        {!loading ? (
-          <div className="deleteBox">
-            <h1 className="loading">Loading...</h1>
-          </div>
-        ) : (
-          <div className="deleteBox">
-            <h1 className="title">
-              Are you sure you want to delete this post?
-            </h1>
-            <div className="buttons">
-              <button className="button white" onClick={closeDeleteScreen}>
-                No, go back
-              </button>
-              <button className="button blue" onClick={deleteThisLink}>
-                Yes, delete it
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="userIconNLikesColumn">
-        <img
-          onClick={() => navigate(`/user/${links.links.userId}`)}
-          src={links.links.pictureUrl}
-          alt="idoso nervoso"
-          className="profileIcon"
-        ></img>
-        {likes.boolean ? (
-          <h3 onClick={dislike}>
-            <AiFillHeart className="icon" color="red" />
-          </h3>
-        ) : (
-          <h3 onClick={like}>
-            <AiOutlineHeart className="icon" />
-          </h3>
-        )}
-        <Tippy content={likes.name} >
-          <h3 className="likes">
-            {likes.list ? likes.cont : links.links.likes} likes
-          </h3>
-        </Tippy>
-        <SlBubbles className="icon" />
-        <h3 className="likes">
-          0 comments
-        </h3>
-      </div>
-      <div>
-        <div className="nameNIcons">
-          <h2 className="username" onClick={() => navigate(`/user/${links.links.userId}`)}>{links.links.userName}</h2>
-          {links.links.userName === user.userName ? (
-            <div>
-              <BsPencilSquare className="miniIcon" onClick={() => setEditBoolean(!editBoolean)} />
-              <BiTrash className="miniIcon" onClick={openDeleteScreen} />
+    <>
+      <TimelineLinksStyle>
+        <div className={deleteLinkScreen}>
+          {!loading ? (
+            <div className="deleteBox">
+              <h1 className="loading">Loading...</h1>
             </div>
           ) : (
-            ""
+            <div className="deleteBox">
+              <h1 className="title">
+                Are you sure you want to delete this post?
+              </h1>
+              <div className="buttons">
+                <button className="button white" onClick={closeDeleteScreen}>
+                  No, go back
+                </button>
+                <button className="button blue" onClick={deleteThisLink}>
+                  Yes, delete it
+                </button>
+              </div>
+            </div>
           )}
         </div>
-        {editBoolean ? <h3>{newText}</h3>
-          : 
-          <form>
-            <textarea
-              autoFocus
-              onKeyPress={editText}
-              className="textArea"
-              placeholder="http://..."
-              type="text"
-              value={newText}
-              onChange={e => setNewText(e.target.value)}
-              disabled={(loading) ? "" : "disabled"}
-            />
-          </form>}
-        <a
-          href={links.links.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="metadataBox"
-        >
-          <div className="metadataInfo">
-            <h1 className="metadataTitle">{metadata.title}</h1>
-            <span className="metadataSpan">{metadata.description}</span>
-            <h4 className="metadataUrl">{metadata.url}</h4>
+        <div className="userIconNLikesColumn">
+          <img
+            onClick={() => navigate(`/user/${links.links.userId}`)}
+            src={links.links.pictureUrl}
+            alt="idoso nervoso"
+            className="profileIcon"
+          ></img>
+          {likes.boolean ? (
+            <h3 onClick={dislike}>
+              <AiFillHeart className="icon" color="red" />
+            </h3>
+          ) : (
+            <h3 onClick={like}>
+              <AiOutlineHeart className="icon" />
+            </h3>
+          )}
+          <Tippy content={likes.name}>
+            <h3 className="likes">
+              {likes.list ? likes.cont : links.links.likes} likes
+            </h3>
+          </Tippy>
+          <SlBubbles className="icon" onClick={() => setCommentBoolean(!commentBoolean)} />
+          <h3 className="likes">
+            {commentCount} comments
+          </h3>
+        </div>
+        <div>
+          <div className="nameNIcons">
+            <h2 className="username" onClick={() => navigate(`/user/${links.links.userId}`)}>{links.links.userName}</h2>
+            {links.links.userName === user.userName ? (
+              <div>
+                <BsPencilSquare className="miniIcon" onClick={() => setEditBoolean(!editBoolean)} />
+                <BiTrash className="miniIcon" onClick={openDeleteScreen} />
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-          <img src={metadata.image?.url} alt="" className="metadataImage" />
-        </a>
-      </div>
-      <CommentsBox/>
-    </TimelineLinksStyle>
+          {editBoolean ? <h3>{newText}</h3>
+            : 
+            <form>
+              <textarea
+                autoFocus
+                onKeyPress={editText}
+                className="textArea"
+                placeholder="http://..."
+                type="text"
+                value={newText}
+                onChange={e => setNewText(e.target.value)}
+                disabled={(loading) ? "" : "disabled"}
+              />
+            </form>}
+          <a
+            href={links.links.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="metadataBox"
+          >
+            <div className="metadataInfo">
+              <h1 className="metadataTitle">{metadata.title}</h1>
+              <span className="metadataSpan">{metadata.description}</span>
+              <h4 className="metadataUrl">{metadata.url}</h4>
+            </div>
+            <img src={metadata.image?.url} alt="" className="metadataImage" />
+          </a>
+        </div>
+        
+      </TimelineLinksStyle>
+      {commentBoolean ? ""
+        : <CommentsBox linkId={links.links.id} linkUserName={links.links.userName} commentCount={setCommentCount} setCommentCount={setCommentCount} />}
+    </>
+    
   );
 }
 const TimelineLinksStyle = styled.div`

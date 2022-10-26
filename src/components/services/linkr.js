@@ -24,6 +24,21 @@ function updateLink(textEdited, linkId, postAuth) {
   return promise;
 }
 
+function postComment(commentObj, postAuth) {
+  const promise = axios.post(`${BASE_URL}/comment`, commentObj, postAuth);
+  return promise;
+}
+
+function getCommentsCount(linkId) {
+  const promise = axios.get(`${BASE_URL}/commentCount/${linkId}`);
+  return promise;
+}
+
+function getComments(linkId) {
+  const promise = axios.get(`${BASE_URL}/comment/${linkId}`);
+  return promise;
+}
+
 function postCreat(obj){
     const promise = axios.post(`${BASE_URL}/signup`,obj);
     return promise;
@@ -95,6 +110,9 @@ export {
   getLink,
   deleteLink,
   updateLink,
+  postComment,
+  getCommentsCount,
+  getComments,
   getUserValidation,
   postLogin,
   postCreat,
