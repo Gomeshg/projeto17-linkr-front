@@ -50,9 +50,8 @@ export default function TimelineLinks(links, boolean) {
 
 
   function tippiString(sum) {
-    name = likes.list
-      ? likes.list.filter((value) => value !== links.links.userName)
-      : links.links.likeUser.filter((value) => value !== links.links.userName);
+    name = likes.list ? likes.list.filter((value) =>{ return value !== links.links.userName}) : links.links.likeUser.filter((value) => {{return value !== links.links.userName}});
+   
     tippName = !name[1] ? name[0]+" and other x peoples":name[0]+ " , " +name[1]+ " and other x peoples";
     if (name.length === 1) {
       tippName = name.join(" e ") + " like this";
@@ -202,7 +201,7 @@ export default function TimelineLinks(links, boolean) {
             <AiOutlineHeart className="icon" />
           </h3>
         )}
-        <Tippy content={likes.name}>
+        <Tippy content={likes.name} >
           <h3 className="likes">
             {likes.list ? likes.cont : links.links.likes} likes
           </h3>
