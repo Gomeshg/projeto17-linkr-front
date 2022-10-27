@@ -46,6 +46,7 @@ export default function Timeline() {
        reloading()
       }, []);
 
+    console.log(links, loading)
   return (
     <TimelineScreen>
       <Header />
