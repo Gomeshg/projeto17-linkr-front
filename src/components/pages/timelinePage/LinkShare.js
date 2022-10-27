@@ -2,10 +2,16 @@ import { useState, useContext } from "react";
 import styled from "styled-components";
 
 import UserContext from "../../../parts/UserContext";
-import { postLink } from "../../services/linkr";
+import {
+  postLink,
+  postHashtag,
+  getLastHashtagId,
+  getLastLinkId,
+  relationateLinkWithHashtag,
+} from "../../services/linkr";
 
 import getHashtags from "../hashtagPage/getHashtags.js";
-import { postHashtag } from "../../services/linkr";
+import { sleep } from "../../services/functions.js";
 
 export default function LinkShare() {
   const { user, setUser } = useContext(UserContext);
@@ -42,27 +48,44 @@ export default function LinkShare() {
       text: text,
     };
 
-    const hashtags = getHashtags(link.text);
-    // hashtags.forEach((hashtag) => {
-    //   const objHashtag = {
-    //     hashtag: hashtag,
-    //   };
-
-    //   postHashtag(objHashtag)
-    //     .then(res => {
-
-    //     })
-    //     .catch((e) => {
-    //       alert("Houve um erro para inserir as hashtags");
-    //     });
-    // });
-
     if (validate === true) {
       setLoading(false);
-
+      let linkId;
       postLink(link, postAuth)
         .then((res) => {
-          console.log(res.data);
+          getLastLinkId(token.token)
+            .then((res) => {
+              linkId = res.data.rows[0].id;
+              console.log(linkId);
+            })
+            .catch((e) => {
+              alert("Erro do servidor");
+            });
+
+          const hashtags = getHashtags(link.text);
+          hashtags.forEach(async (hashtag) => {
+            await sleep(1000);
+            postHashtag(hashtag, token.token)
+              .then(() => {
+                getLastHashtagId(token.token)
+                  .then((res) => {
+                    const hashtagId = res.data.rows[0].id;
+                    console.log(hashtagId);
+                    relationateLinkWithHashtag(linkId, hashtagId, token.token)
+                      .then((res) => {})
+                      .catch((e) => {
+                        alert("Erro do servidor");
+                      });
+                  })
+                  .catch((e) => {
+                    alert("Erro do servidor!");
+                  });
+              })
+              .catch((e) => {
+                alert("Houve um erro para inserir as hashtags");
+              });
+          });
+
           // window.location.reload(false);
         })
         .catch((error) => {

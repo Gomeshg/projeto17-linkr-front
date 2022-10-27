@@ -6,8 +6,10 @@ import { getTrending } from "../../services/linkr";
 
 export default function Trendings() {
   const [trendings, setTrendings] = useState(null);
+  const token = JSON.parse(localStorage.getItem("linkr"));
+
   useEffect(() => {
-    getTrending()
+    getTrending(token.token)
       .then((res) => {
         setTrendings(res.data);
       })

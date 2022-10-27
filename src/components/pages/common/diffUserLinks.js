@@ -1,23 +1,19 @@
 import styled from "styled-components";
 
-export default function UserProfileLinks({links, isUserProfile}) {
-
+export default function UserProfileLinks({ links, isUserProfile }) {
   // Falta entender porque o isUser funciona assim que da ctrl+s em userPage, mas ai quando testa atualizando a url nao funciona mais e fica sempre false
 
-  console.log(isUserProfile)
-  console.log(links)
+  // console.log(isUserProfile)
+  // console.log(links)
 
   return (
     <>
-    É O PERFIL DO USUARIO? 
-    {isUserProfile ? "É" : "NAO É"}
-    {links.url}
-   
+      É O PERFIL DO USUARIO?
+      {isUserProfile ? "É" : "NAO É"}
+      {links.url}
     </>
-  )
-
+  );
 }
-
 
 // {loading ? (
 //   <h3 className="noLinks">Loading...</h3>
@@ -28,9 +24,9 @@ export default function UserProfileLinks({links, isUserProfile}) {
 //     ) : (
 //       links.map((link => (
 //           <UserProfileLinks
-//           isUserProfile={isUserProfile} 
+//           isUserProfile={isUserProfile}
 //           link={link}
-          
+
 //           />
 //       ))
 //     )),

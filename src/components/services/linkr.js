@@ -49,24 +49,53 @@ function getUserValidation(token) {
   return promise;
 }
 
-function getTrending() {
-  const promise = axios.get(`${BASE_URL}/trending`);
+function getTrending(token) {
+  const header = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}/trending`, header);
   return promise;
 }
 
-function getLinksFilteredByHashtag(hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`);
+function getLinksFilteredByHashtag(hashtag, token) {
+  const header = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`, header);
   return promise;
 }
 
-function postHashtag(hashtag) {
-  const promise = axios.post(`${BASE_URL}/hashtag`, hashtag);
+function relationateLinkWithHashtag(linkId, hashtagId, token) {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const body = {
+    linkId: linkId,
+    hashtagId: hashtagId,
+  };
+  const promise = axios.get(
+    `${BASE_URL}/relationateLinkWithHashtag`,
+    body,
+    config
+  );
   return promise;
 }
 
-function getLastLinkId() {
-  const promise = axios.get(`${BASE_URL}/lastLink`);
+function postHashtag(hashtag, token) {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const body = {
+    hashtag: hashtag,
+  };
+  const promise = axios.post(`${BASE_URL}/hashtag`, body, config);
+  return promise;
 }
+
+function getLastLinkId(token) {
+  const header = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}/lastLink`, header);
+  return promise;
+}
+
+function getLastHashtagId(token) {
+  const header = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}/lastHashtag`, header);
+  return promise;
+}
+
 function getLinksFilteredByUser(token, userId) {
   const header = { headers: { Authorization: `Bearer ${token}` } };
   const promise = axios.get(`${BASE_URL}/userPosts/${userId}`, header);
@@ -90,6 +119,9 @@ export {
   postCreat,
   getTrending,
   getLinksFilteredByHashtag,
+  relationateLinkWithHashtag,
+  getLastLinkId,
+  getLastHashtagId,
   postHashtag,
   getLinksFilteredByUser,
   getUserName,

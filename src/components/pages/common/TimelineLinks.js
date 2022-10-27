@@ -109,7 +109,7 @@ export default function TimelineLinks(links) {
       });
   }
 
-  console.log(links);
+  // console.log(links);
   return (
     <TimelineLinksStyle>
       <div className={deleteLinkScreen}>
