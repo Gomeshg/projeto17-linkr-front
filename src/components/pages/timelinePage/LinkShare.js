@@ -64,7 +64,6 @@ export default function LinkShare() {
 
           const hashtags = getHashtags(link.text);
           hashtags.forEach(async (hashtag) => {
-            await sleep(1000);
             postHashtag(hashtag, token.token)
               .then(() => {
                 getLastHashtagId(token.token)

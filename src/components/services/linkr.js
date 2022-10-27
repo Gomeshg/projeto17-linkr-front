@@ -83,7 +83,7 @@ function relationateLinkWithHashtag(linkId, hashtagId, token) {
     linkId: linkId,
     hashtagId: hashtagId,
   };
-  const promise = axios.get(
+  const promise = axios.post(
     `${BASE_URL}/relationateLinkWithHashtag`,
     body,
     config
