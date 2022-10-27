@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, AiOutlineShareAlt } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { BsPencilSquare } from "react-icons/bs";
 import { SlBubbles } from "react-icons/sl";
@@ -175,6 +175,10 @@ export default function TimelineLinks(links, boolean) {
     }).catch();
   }, [commentCount]);
 
+  function share(){
+    
+  }
+
   return (
     <>
       <TimelineLinksStyle>
@@ -224,6 +228,9 @@ export default function TimelineLinks(links, boolean) {
           <h3 className="likes">
             {commentCount} comments
           </h3>
+
+          <AiOutlineShareAlt className="icon" onClick={share} />
+
         </div>
         <div>
           <div className="nameNIcons">
