@@ -13,6 +13,13 @@ function getLink(token) {
   const promise = axios.get(`${BASE_URL}/timeline`, header);
   return promise;
 }
+function deleteLink(linkId, postAuth) {
+  const promise = axios.delete(
+    `${BASE_URL}/deleteTimeline/${linkId}`,
+    postAuth
+  );
+  return promise;
+}
 
 function updateLink(textEdited, linkId, postAuth) {
   const promise = axios.put(
@@ -143,6 +150,7 @@ export {
   postDisLike,
   postLink,
   getLink,
+  deleteLink,
   updateLink,
   postComment,
   getCommentsCount,
