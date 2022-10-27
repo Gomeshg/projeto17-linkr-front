@@ -21,7 +21,7 @@ export default function App() {
     const token = JSON.parse(localStorage.getItem("linkr"));
     if (!user.userName && token)
       getUserValidation(token.token).then((value) => {
-        setUser({ ...user, ...value.data });
+        setUser({ ...user, ...value.data, ...token });
       });
   }, []);
 

@@ -44,10 +44,12 @@ export default function TimelineLinks(links, boolean) {
     setMetadata(data);
   }
   useEffect(() => {
+     
     getMetadata();
   }, []);
 
   useEffect(() => {
+    if(token)setUser({...token})
     getMetadata()
     tippiString();
   }, []);
