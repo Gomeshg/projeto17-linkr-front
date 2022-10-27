@@ -10,15 +10,20 @@ export default function RenderUserSearched({ usersFiltered }) {
 
   const navigate = useNavigate();
 
+  console.log(usersFiltered[0])
+
   return usersFiltered.length === 0 ? (
     <UserNotListed>
       <h2>No users found</h2>
     </UserNotListed>
   ) : (
-    usersFiltered.map((user) => (
+    usersFiltered.map((user, index) => (
       <UserListed onClick={() => accessUserPage(user.id)}>
         <img src={user.pictureUrl} />
-        <h1>{user.userName}</h1>
+        <h1>{user.userName}
+        </h1>
+        {usersFiltered[index].following ? (<div className="following"> following </div>) : ''}
+
       </UserListed>
     ))
   );
@@ -33,6 +38,18 @@ const UserListed = styled.div`
   justify-content: flex-start;
   position: relative;
   cursor: pointer;
+  .following{
+    margin-top: 10px;
+    font-size: 19px;
+    font-family: "Lato";
+    font-weight: 400;
+    color: #515151;
+    width: 100% ;
+    display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  
+  }
 
   img {
     height: 40px;

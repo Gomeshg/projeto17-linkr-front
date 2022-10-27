@@ -82,6 +82,12 @@ function getLinksFilteredByUser(token,userId) {
   return promise;
 };
 
+function getUsersFiltered(token,usernameSearched){
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.get(`${BASE_URL}/users/search/${usernameSearched}`,header);
+  return promise;
+}
+
 function getUserName(token,userId) {
   const header = { headers: { Authorization: `Bearer ${token}`}}
   const promise = axios.get(`${BASE_URL}/userInfo/${userId}`, header);
@@ -94,6 +100,13 @@ function postFollow(token,id) {
   return promise;
 };
 
+function getAllFollow(token) {
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.get(`${BASE_URL}/follow`,header);
+  return promise;
+};
+
+
 function getFollow(token,id) {
   const header = { headers: { Authorization: `Bearer ${token}`}}
   const promise = axios.get(`${BASE_URL}/follow/${id}`,header);
@@ -102,6 +115,8 @@ function getFollow(token,id) {
 
 
 export {
+  getAllFollow,
+  getUsersFiltered,
   getFollow,
   postFollow,
   postLike,

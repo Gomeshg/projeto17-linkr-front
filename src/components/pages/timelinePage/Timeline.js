@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { getLink } from "../../services/linkr";
+import { useEffect, useState,useContext } from "react";
+import { getAllFollow, getLink } from "../../services/linkr";
 
 import LinkShare from "./LinkShare";
 import Header from "../common/Header";
@@ -8,9 +8,11 @@ import TimelineLinks from "../common/TimelineLinks";
 import Trendings from "../common/Trendings";
 import useInterval from 'use-interval'
 import { AiFillAlert} from 'react-icons/ai';
+import UserContext from "../../../parts/UserContext";
 
 
 export default function Timeline() {
+    const { user } = useContext(UserContext)
     const [loading, setLoading] = useState(true);
     const [links, setLinks] = useState([]);
     const [newLinks, setNewLinks] = useState(0);
@@ -19,18 +21,22 @@ export default function Timeline() {
 
     useInterval(()=>{
       getLink(token.token).then((res) => {
-        if(res.data.length>links.length || res.data.length<links.length )setNewLinks(res.data.length>links.length ? res.data.length-links.length:links.length-res.data.length )
-        
-      }).catch(() => {
+        if(res.data[0]){
+          if(Date.parse(res.data[0].createDate)>Date.parse(links[0].createDate))setNewLinks(res.data.length>links.length ? res.data.length-links.length:links.length-res.data.length )
+        }
+       
+      }).catch((i) => {
         alert("An error occured while trying to fetch the posts, please refresh the page")
-    })
+      })
+      getAllFollow( user.token, user.id).then((value)=> value.data.length>0? setLoading(false):setLoading(true) )
+
     }, 1500)
    
 
 
     async function reloading(){
         getLink(token.token).then((res) => {
-        setLoading(false);
+        setLoading(res.data.lenght===0 ? true: false);
         setLinks(res.data);
     }).catch(() => {
         alert("An error occured while trying to fetch the posts, please refresh the page")
@@ -40,7 +46,6 @@ export default function Timeline() {
        reloading()
       }, []);
 
-    console.log(newLinks)
   return (
     <TimelineScreen>
       <Header />
@@ -54,8 +59,8 @@ export default function Timeline() {
                   </div>
                <LinkShare/>
                     
-                    {(loading) ? <h3 className="noLinks">Loading...</h3>
-                        : [(links.lenght === 0) ? <h3 className="noLinks">There are no posts yet</h3>
+                    {(loading) ? <h3 className="noLinks">You don't follow anyone yet. Search for new friends!</h3>
+                        : [ links.length === 0 ? <h3 className="noLinks">No posts found from your friends</h3>
                             : links.map((links) => (
                                 <TimelineLinks links={links} boolean={links.boolean ? links.boolean: false } />
                             ))
