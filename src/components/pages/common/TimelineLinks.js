@@ -2,26 +2,49 @@ import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { BsPencilSquare } from "react-icons/bs";
+import { SlBubbles } from "react-icons/sl";
 import mql from "@microlink/mql";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
-import { postDisLike, postLike, deleteLink } from "../../services/linkr";
+import {
+  postDisLike,
+  postLike,
+  deleteLink,
+  updateLink,
+  getCommentsCount,
+} from "../../services/linkr";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import CommentsBox from "./CommentsBox";
 import { useNavigate } from "react-router-dom";
 
-export default function TimelineLinks(links) {
+export default function TimelineLinks(links, boolean) {
   const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  // Metadata
+  const [metadata, setMetadata] = useState({});
+
+  // Delete
   const [deleteLinkScreen, setDeleteLinkScreen] = useState(
     "whiteBackground hidden"
   );
+
+  // Edit
+  const [editBoolean, setEditBoolean] = useState(true);
+  const [newText, setNewText] = useState(links.links.text);
+
   const [likes, setLikes] = useState({});
-  const [metadata, setMetadata] = useState({});
   const [loading, setLoading] = useState(true);
   const token = JSON.parse(localStorage.getItem("linkr"));
   let name = [];
   let tippName;
-  const navigate = useNavigate();
+
+  //Comment
+  const [commentBoolean, setCommentBoolean] = useState(true);
+  const [commentCount, setCommentCount] = useState(0);
+
+  //Logica para Metadata ---------------------------------------------
   async function getMetadata() {
     const { status, data, response } = await mql(links.links.url);
     setMetadata(data);
@@ -34,10 +57,18 @@ export default function TimelineLinks(links) {
     getMetadata();
     tippiString();
   }, []);
+
   function tippiString(sum) {
     name = likes.list
-      ? likes.list.filter((value) => value !== links.links.userName)
-      : links.links.likeUser.filter((value) => value !== links.links.userName);
+      ? likes.list.filter((value) => {
+          return value !== links.links.userName;
+        })
+      : links.links.likeUser.filter((value) => {
+          {
+            return value !== links.links.userName;
+          }
+        });
+
     tippName = !name[1]
       ? name[0] + " and other x peoples"
       : name[0] + " , " + name[1] + " and other x peoples";
@@ -90,6 +121,8 @@ export default function TimelineLinks(links) {
     ).catch((value) => console.log(value));
     tippiString(likes.cont - 1);
   }
+
+  //Logica pra Deletar um Link---------------------
   function openDeleteScreen() {
     setDeleteLinkScreen("whiteBackground");
   }
@@ -109,85 +142,167 @@ export default function TimelineLinks(links) {
       });
   }
 
-  // console.log(links);
+  //Logica pra Editar um Link---------------------
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      console.log("User pressed: ", event.key);
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setNewText(links.links.text);
+        setEditBoolean(true);
+      }
+    };
+    document.addEventListener("keydown", keyDownHandler);
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
+
+  async function editText(e) {
+    const postAuth = { headers: { Authorization: "Bearer " + token.token } };
+    const linkId = links.links.id;
+    const textEdited = {
+      text: newText,
+    };
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setLoading(false);
+
+      await updateLink(textEdited, linkId, postAuth)
+        .then(() => {
+          setLoading(true);
+          setEditBoolean(true);
+        })
+        .catch((err) => {
+          setLoading(true);
+          alert("Houve um erro ao editar seu link");
+        });
+    }
+  }
+
+  //Logica pra contar os comentarios -------------------------------
+  useEffect(() => {
+    getCommentsCount(links.links.id)
+      .then((res) => {
+        setCommentCount(res.data[0].comments);
+      })
+      .catch();
+  }, [commentCount]);
+
   return (
-    <TimelineLinksStyle>
-      <div className={deleteLinkScreen}>
-        {!loading ? (
-          <div className="deleteBox">
-            <h1 className="loading">Loading...</h1>
-          </div>
-        ) : (
-          <div className="deleteBox">
-            <h1 className="title">
-              Are you sure you want to delete this post?
-            </h1>
-            <div className="buttons">
-              <button className="button white" onClick={closeDeleteScreen}>
-                No, go back
-              </button>
-              <button className="button blue" onClick={deleteThisLink}>
-                Yes, delete it
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="userIconNLikesColumn">
-        <img
-          onClick={() => navigate(`/user/${links.links.userId}`)}
-          src={links.links.pictureUrl}
-          alt="idoso nervoso"
-          className="profileIcon"
-        ></img>
-        {likes.boolean ? (
-          <h3 onClick={dislike}>
-            <AiFillHeart className="icon" color="red" />
-          </h3>
-        ) : (
-          <h3 onClick={like}>
-            <AiOutlineHeart className="icon" />
-          </h3>
-        )}
-        <Tippy content={likes.name}>
-          <h3 className="likes">
-            {likes.list ? likes.cont : links.links.likes} likes
-          </h3>
-        </Tippy>
-      </div>
-      <div>
-        <div className="nameNIcons">
-          <h2
-            className="username"
-            onClick={() => navigate(`/user/${links.links.userId}`)}
-          >
-            {links.links.userName}
-          </h2>
-          {links.links.userName === user.userName ? (
-            <div>
-              <BsPencilSquare className="miniIcon" />
-              <BiTrash className="miniIcon" onClick={openDeleteScreen} />
+    <>
+      <TimelineLinksStyle>
+        <div className={deleteLinkScreen}>
+          {!loading ? (
+            <div className="deleteBox">
+              <h1 className="loading">Loading...</h1>
             </div>
           ) : (
-            ""
+            <div className="deleteBox">
+              <h1 className="title">
+                Are you sure you want to delete this post?
+              </h1>
+              <div className="buttons">
+                <button className="button white" onClick={closeDeleteScreen}>
+                  No, go back
+                </button>
+                <button className="button blue" onClick={deleteThisLink}>
+                  Yes, delete it
+                </button>
+              </div>
+            </div>
           )}
         </div>
-        <h3>{links.links.text}</h3>
-        <a
-          href={links.links.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="metadataBox"
-        >
-          <div className="metadataInfo">
-            <h1 className="metadataTitle">{metadata.title}</h1>
-            <span className="metadataSpan">{metadata.description}</span>
-            <h4 className="metadataUrl">{metadata.url}</h4>
+        <div className="userIconNLikesColumn">
+          <img
+            onClick={() => navigate(`/user/${links.links.userId}`)}
+            src={links.links.pictureUrl}
+            alt="idoso nervoso"
+            className="profileIcon"
+          ></img>
+          {likes.boolean ? (
+            <h3 onClick={dislike}>
+              <AiFillHeart className="icon" color="red" />
+            </h3>
+          ) : (
+            <h3 onClick={like}>
+              <AiOutlineHeart className="icon" />
+            </h3>
+          )}
+          <Tippy content={likes.name}>
+            <h3 className="likes">
+              {likes.list ? likes.cont : links.links.likes} likes
+            </h3>
+          </Tippy>
+          <SlBubbles
+            className="icon"
+            onClick={() => setCommentBoolean(!commentBoolean)}
+          />
+          <h3 className="likes">{commentCount} comments</h3>
+        </div>
+        <div>
+          <div className="nameNIcons">
+            <h2
+              className="username"
+              onClick={() => navigate(`/user/${links.links.userId}`)}
+            >
+              {links.links.userName}
+            </h2>
+            {links.links.userName === user.userName ? (
+              <div>
+                <BsPencilSquare
+                  className="miniIcon"
+                  onClick={() => setEditBoolean(!editBoolean)}
+                />
+                <BiTrash className="miniIcon" onClick={openDeleteScreen} />
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-          <img src={metadata.image?.url} alt="" className="metadataImage" />
-        </a>
-      </div>
-    </TimelineLinksStyle>
+          {editBoolean ? (
+            <h3>{newText}</h3>
+          ) : (
+            <form>
+              <textarea
+                autoFocus
+                onKeyPress={editText}
+                className="textArea"
+                placeholder="http://..."
+                type="text"
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+                disabled={loading ? "" : "disabled"}
+              />
+            </form>
+          )}
+          <a
+            href={links.links.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="metadataBox"
+          >
+            <div className="metadataInfo">
+              <h1 className="metadataTitle">{metadata.title}</h1>
+              <span className="metadataSpan">{metadata.description}</span>
+              <h4 className="metadataUrl">{metadata.url}</h4>
+            </div>
+            <img src={metadata.image?.url} alt="" className="metadataImage" />
+          </a>
+        </div>
+      </TimelineLinksStyle>
+      {commentBoolean ? (
+        ""
+      ) : (
+        <CommentsBox
+          linkId={links.links.id}
+          linkUserName={links.links.userName}
+          commentCount={setCommentCount}
+          setCommentCount={setCommentCount}
+        />
+      )}
+    </>
   );
 }
 const TimelineLinksStyle = styled.div`
@@ -275,17 +390,20 @@ const TimelineLinksStyle = styled.div`
   .icon {
     height: 25px;
     width: 25px;
+    margin-top: 8px;
     cursor: pointer;
   }
   .miniIcon {
     margin-left: 10px;
     height: 15px;
     width: 15px;
+    cursor: pointer;
   }
   .likes {
     font-family: "Lato", sans-serif;
     font-weight: 400;
-    font-size: 11px;
+    font-size: 9px;
+    margin-top: 5px;
   }
   .username {
     font-family: "Lato", sans-serif;
@@ -352,5 +470,14 @@ const TimelineLinksStyle = styled.div`
     font-weight: 700;
     font-size: 30px;
     color: #ffffff;
+  }
+  .textArea {
+    width: 500px;
+    border-radius: 7px;
+    padding: 5px;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #4c4c4c;
   }
 `;

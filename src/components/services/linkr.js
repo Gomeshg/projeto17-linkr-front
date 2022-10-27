@@ -14,11 +14,27 @@ function getLink(token) {
   return promise;
 }
 
-function deleteLink(linkId, postAuth) {
-  const promise = axios.delete(
-    `${BASE_URL}/deleteTimeline/${linkId}`,
+function updateLink(textEdited, linkId, postAuth) {
+  const promise = axios.put(
+    `${BASE_URL}/updateTimeline/${linkId}`,
+    textEdited,
     postAuth
   );
+  return promise;
+}
+
+function postComment(commentObj, postAuth) {
+  const promise = axios.post(`${BASE_URL}/comment`, commentObj, postAuth);
+  return promise;
+}
+
+function getCommentsCount(linkId) {
+  const promise = axios.get(`${BASE_URL}/commentCount/${linkId}`);
+  return promise;
+}
+
+function getComments(linkId) {
+  const promise = axios.get(`${BASE_URL}/comment/${linkId}`);
   return promise;
 }
 
@@ -108,12 +124,29 @@ function getUserName(token, userId) {
   return promise;
 }
 
+function postFollow(token, id) {
+  const header = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.post(`${BASE_URL}/follow/${id}`, {}, header);
+  return promise;
+}
+
+function getFollow(token, id) {
+  const header = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.get(`${BASE_URL}/follow/${id}`, header);
+  return promise;
+}
+
 export {
+  getFollow,
+  postFollow,
   postLike,
   postDisLike,
   postLink,
   getLink,
-  deleteLink,
+  updateLink,
+  postComment,
+  getCommentsCount,
+  getComments,
   getUserValidation,
   postLogin,
   postCreat,
