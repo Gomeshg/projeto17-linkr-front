@@ -24,6 +24,21 @@ function updateLink(textEdited, linkId, postAuth) {
   return promise;
 }
 
+function postComment(commentObj, postAuth) {
+  const promise = axios.post(`${BASE_URL}/comment`, commentObj, postAuth);
+  return promise;
+}
+
+function getCommentsCount(linkId) {
+  const promise = axios.get(`${BASE_URL}/commentCount/${linkId}`);
+  return promise;
+}
+
+function getComments(linkId) {
+  const promise = axios.get(`${BASE_URL}/comment/${linkId}`);
+  return promise;
+}
+
 function postCreat(obj){
     const promise = axios.post(`${BASE_URL}/signup`,obj);
     return promise;
@@ -67,25 +82,48 @@ function getLinksFilteredByUser(token,userId) {
   return promise;
 };
 
+function getUsersFiltered(usernameSearched){
+  const promise = axios.get(`${BASE_URL}/users/search/${usernameSearched}`);
+  return promise;
+}
+
 function getUserName(token,userId) {
   const header = { headers: { Authorization: `Bearer ${token}`}}
   const promise = axios.get(`${BASE_URL}/userInfo/${userId}`, header);
   return promise;
 };
 
+function postFollow(token,id) {
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.post(`${BASE_URL}/follow/${id}`,{}, header);
+  return promise;
+};
+
+function getFollow(token,id) {
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.get(`${BASE_URL}/follow/${id}`,header);
+  return promise;
+};
+
 
 export {
+  getFollow,
+  postFollow,
   postLike,
   postDisLike,
   postLink,
   getLink,
   deleteLink,
   updateLink,
+  postComment,
+  getCommentsCount,
+  getComments,
   getUserValidation,
   postLogin,
   postCreat,
   getTrending,
   getLinksFilteredByHashtag,
   getLinksFilteredByUser,
+  getUsersFiltered,
   getUserName
 };

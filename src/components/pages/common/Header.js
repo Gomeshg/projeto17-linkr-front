@@ -4,9 +4,9 @@ import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
 import { useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
 import { AiOutlineSearch } from 'react-icons/ai';
-import axios from "axios";
 
-import RenderUserSearched from "./RenderUserSearched";
+import RenderUserSearched from "./RenderUserSearched.js";
+import {getUsersFiltered} from "../../services/linkr.js";
 
 
 
@@ -29,12 +29,12 @@ export default function Header() {
         setboolean(!boolean)
     }
 
-    async function getUsersFiltered(usernameSearched){
+    async function renderUsersFiltered(usernameSearched){
 
         const body = {partOfUsername:usernameSearched};
 
         try {
-            const res = await axios.get(`http://localhost:4000/users/search/${usernameSearched}`);
+            const res = await getUsersFiltered(usernameSearched)
             setUsersFiltered(res.data)
         } catch(err) {
             console.error(err);
@@ -46,18 +46,20 @@ export default function Header() {
 
         let usernameSearched = e.target.value;
 
-        if (usernameSearched.length>=3){
-            setOpenSearchResults(true);
-            getUsersFiltered(usernameSearched);
-        } else {
-            setOpenSearchResults(false);
-            setUsersFiltered([])
-        }
+        setTimeout(()=>{
+            if (usernameSearched.length>=3){
+                setOpenSearchResults(true);
+                renderUsersFiltered(usernameSearched);
+            } else {
+                setOpenSearchResults(false);
+                setUsersFiltered([])
+            }
+        },300)       
 
     }
 
     function goToTimeline(){
-        navigat('/');
+        navigat('/timeline');
     }
 
     return (
