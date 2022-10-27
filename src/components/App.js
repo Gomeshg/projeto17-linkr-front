@@ -13,7 +13,6 @@ import Hashtag from "./pages/hashtagPage/Hashtag";
 import UserPage from "./pages/userPage/UserPage";
 import { getUserValidation } from "./services/linkr";
 
-
 export default function App() {
   const [user, setUser] = useState([]);
   console.log(user);

@@ -113,9 +113,9 @@ function getLastLinkId(token) {
   return promise;
 }
 
-function getLastHashtagId(token) {
+function getHashtagId(hashtag, token) {
   const header = { headers: { Authorization: `Bearer ${token}` } };
-  const promise = axios.get(`${BASE_URL}/lastHashtag`, header);
+  const promise = axios.get(`${BASE_URL}/oneHashtag/${hashtag}`, header);
   return promise;
 }
 
@@ -162,7 +162,7 @@ export {
   getLinksFilteredByHashtag,
   relationateLinkWithHashtag,
   getLastLinkId,
-  getLastHashtagId,
+  getHashtagId,
   postHashtag,
   getLinksFilteredByUser,
   getUserName,

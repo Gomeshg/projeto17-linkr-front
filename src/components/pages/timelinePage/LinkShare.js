@@ -5,13 +5,12 @@ import UserContext from "../../../parts/UserContext";
 import {
   postLink,
   postHashtag,
-  getLastHashtagId,
+  getHashtagId,
   getLastLinkId,
   relationateLinkWithHashtag,
 } from "../../services/linkr";
 
 import getHashtags from "../hashtagPage/getHashtags.js";
-import { sleep } from "../../services/functions.js";
 
 export default function LinkShare() {
   const { user, setUser } = useContext(UserContext);
@@ -37,7 +36,7 @@ export default function LinkShare() {
     return false;
   }
 
-  function postUrl(e) {
+  async function postUrl(e) {
     e.preventDefault();
     const validate = validation();
     const token = JSON.parse(localStorage.getItem("linkr"));
@@ -50,47 +49,26 @@ export default function LinkShare() {
 
     if (validate === true) {
       setLoading(false);
-      let linkId;
-      postLink(link, postAuth)
-        .then((res) => {
-          getLastLinkId(token.token)
-            .then((res) => {
-              linkId = res.data.rows[0].id;
-              console.log(linkId);
-            })
-            .catch((e) => {
-              alert("Erro do servidor");
-            });
 
-          const hashtags = getHashtags(link.text);
-          hashtags.forEach(async (hashtag) => {
-            postHashtag(hashtag, token.token)
-              .then(() => {
-                getLastHashtagId(token.token)
-                  .then((res) => {
-                    const hashtagId = res.data.rows[0].id;
-                    console.log(hashtagId);
-                    relationateLinkWithHashtag(linkId, hashtagId, token.token)
-                      .then((res) => {})
-                      .catch((e) => {
-                        alert("Erro do servidor");
-                      });
-                  })
-                  .catch((e) => {
-                    alert("Erro do servidor!");
-                  });
-              })
-              .catch((e) => {
-                alert("Houve um erro para inserir as hashtags");
-              });
-          });
+      try {
+        await postLink(link, postAuth);
+        const lastLink = await getLastLinkId(token.token);
+        const linkId = lastLink.data.rows[0].id;
 
-          // window.location.reload(false);
-        })
-        .catch((error) => {
-          alert("Houve um erro ao publicar seu link");
-        });
-      setLoading(true);
+        const hashtags = getHashtags(link.text);
+
+        for (let i = 0; i < hashtags.length; i++) {
+          await postHashtag(hashtags[i], token.token);
+          const tag = await getHashtagId(hashtags[i], token.token);
+          const hashtagId = tag.data.rows[0].id;
+
+          await relationateLinkWithHashtag(linkId, hashtagId, token.token);
+        }
+        setLoading(true);
+        window.location.reload(false);
+      } catch (e) {
+        alert(e.message);
+      }
     }
   }
 
