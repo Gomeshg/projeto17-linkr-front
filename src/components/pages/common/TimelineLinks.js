@@ -17,6 +17,11 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import CommentsBox from "./CommentsBox";
 import { useNavigate } from "react-router-dom";
+import {
+  insert_style_in_hashtags,
+  getHashtags,
+} from "../../services/functions";
+import parse from "html-react-parser";
 
 export default function TimelineLinks(links, boolean) {
   const { user, setUser } = useContext(UserContext);
@@ -32,7 +37,9 @@ export default function TimelineLinks(links, boolean) {
 
   // Edit
   const [editBoolean, setEditBoolean] = useState(true);
-  const [newText, setNewText] = useState(links.links.text);
+  const hashtags = getHashtags(links.links.text);
+  const text = insert_style_in_hashtags(links.links.text, hashtags);
+  const [newText, setNewText] = useState(text);
 
   const [likes, setLikes] = useState({});
   const [loading, setLoading] = useState(true);
@@ -262,7 +269,7 @@ export default function TimelineLinks(links, boolean) {
             )}
           </div>
           {editBoolean ? (
-            <h3>{newText}</h3>
+            <div>{parse(newText)}</div>
           ) : (
             <form>
               <textarea
@@ -315,6 +322,16 @@ const TimelineLinksStyle = styled.div`
   padding: 15px;
   word-wrap: break-word;
   overflow: auto;
+
+  a {
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  a:hover {
+    color: rgb(180, 180, 180);
+  }
   .whiteBackground {
     display: flex;
     justify-content: center;

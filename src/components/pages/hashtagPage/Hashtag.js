@@ -4,7 +4,6 @@ import { getLinksFilteredByHashtag } from "../../services/linkr";
 
 import Header from "../common/Header";
 import TimelineLinks from "../common/TimelineLinks";
-import trendings from "../common/Trendings";
 import { useParams } from "react-router-dom";
 import Trendings from "../common/Trendings";
 

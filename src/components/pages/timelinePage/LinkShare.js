@@ -10,7 +10,7 @@ import {
   relationateLinkWithHashtag,
 } from "../../services/linkr";
 
-import getHashtags from "../hashtagPage/getHashtags.js";
+import { getHashtags } from "../../services/functions.js";
 
 export default function LinkShare() {
   const { user, setUser } = useContext(UserContext);
