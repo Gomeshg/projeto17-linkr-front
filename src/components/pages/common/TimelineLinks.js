@@ -6,14 +6,16 @@ import { SlBubbles } from "react-icons/sl";
 import mql from "@microlink/mql";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
-import { postDisLike, postLike, deleteLink, updateLink, getCommentsCount } from "../../services/linkr";
+import { postDisLike, postLike, deleteLink, updateLink, getCommentsCount , postShare } from "../../services/linkr";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import CommentsBox from "./CommentsBox";
 import { useNavigate } from "react-router-dom";
 
-export default function TimelineLinks(links, boolean) {
+export default function TimelineLinks(links) {
   const { user, setUser } = useContext(UserContext);
+  const [all, setAll] = useState({shares:false});
+
   const navigate = useNavigate()
 
   // Metadata
@@ -51,7 +53,9 @@ export default function TimelineLinks(links, boolean) {
   useEffect(() => {
     if(token)setUser({...token})
     getMetadata()
-    tippiString();
+    tippiString()
+    share(false)
+
   }, []);
 
 
@@ -141,7 +145,6 @@ export default function TimelineLinks(links, boolean) {
           setEditBoolean(true);
         }
       };
-      document.addEventListener('keydown', keyDownHandler);
       return () => {
         document.removeEventListener('keydown', keyDownHandler);
       };
@@ -175,9 +178,25 @@ export default function TimelineLinks(links, boolean) {
     }).catch();
   }, [commentCount]);
 
-  function share(){
-    
+
+//Logica pra contar os repost -------------------------------
+  function share(boolean){
+
+
+    const link = {...links.links}
+
+    postShare(
+      token.token,
+      boolean ? {linkId: 0, userId: 0 } : {linkId: link.id, userId: link.userId}
+    ).then((i)=> {
+      console.log(i.data.cont)
+      setAll({...all, sharesCount: i.data.cont})
+      closeDeleteScreen()
+      links.reloading()
+    }).catch(()=>{closeDeleteScreen();console.log("olaaa")})
   }
+
+  console.log(links)
 
   return (
     <>
@@ -190,14 +209,14 @@ export default function TimelineLinks(links, boolean) {
           ) : (
             <div className="deleteBox">
               <h1 className="title">
-                Are you sure you want to delete this post?
+                {all.shares? "Do you want to share this link" :"Are you sure you want to delete this post?"}
               </h1>
               <div className="buttons">
                 <button className="button white" onClick={closeDeleteScreen}>
                   No, go back
                 </button>
-                <button className="button blue" onClick={deleteThisLink}>
-                  Yes, delete it
+                <button className="button blue" onClick={all.shares ? ()=>share(false) : deleteThisLink}>
+                {all.shares? "yes share" :"Yes, delete it"}
                 </button>
               </div>
             </div>
@@ -229,7 +248,10 @@ export default function TimelineLinks(links, boolean) {
             {commentCount} comments
           </h3>
 
-          <AiOutlineShareAlt className="icon" onClick={share} />
+          <AiOutlineShareAlt className="icon" onClick={()=>{openDeleteScreen() ; setAll({...all, shares:true })}} />
+          <h3 className="likes">
+            {all.sharesCount} shares
+          </h3>
 
         </div>
         <div>
