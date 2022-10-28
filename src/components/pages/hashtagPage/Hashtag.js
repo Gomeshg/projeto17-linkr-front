@@ -36,7 +36,11 @@ export default function Hashtag() {
         <Posts>
           {links !== null
             ? links.map((link, index) => (
-                <TimelineLinks key={index} links={link} />
+                <TimelineLinks
+                  key={index}
+                  links={link}
+                  boolean={link.boolean ? link.boolean : false}
+                />
               ))
             : "Loading..."}
         </Posts>
