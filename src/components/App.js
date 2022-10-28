@@ -16,10 +16,11 @@ import { getUserValidation } from "./services/linkr";
 
 export default function App() {
   const [user, setUser] = useState([]);
-  console.log(user);
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("linkr"));
-    if (!user.userName && token)
+    console.log(user.userName, token);
+
+    if (user.userName || token)
       getUserValidation(token.token).then((value) => {
         setUser({ ...user, ...value.data, ...token });
       });
@@ -38,10 +39,6 @@ export default function App() {
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/hashtag/:hashtag" element={<Hashtag />} />
               <Route path="/user/:id" element={<UserPage />} />
-              {/* <Route path="/user/:id" element={<UserPage />} /> */}
-              {/*<Route path='/Novo-recebido' element={<NewValue optional={true} />} /> 
-                            <Route path='/Editar-entrada' element={<ModifiValue optional={true} />} /> 
-                            <Route path='/Editar-saida' element={<ModifiValue optional={false} />} />  */}
             </Routes>
           </BrowserRouter>
         </Wrapper>

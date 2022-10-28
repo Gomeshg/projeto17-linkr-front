@@ -113,8 +113,15 @@ function getFollow(token,id) {
   return promise;
 };
 
+function postShare(token,body) {
+  const header = { headers: { Authorization: `Bearer ${token}`}}
+  const promise = axios.post(`${BASE_URL}/shares`, body, header);
+  return promise;
+};
+
 
 export {
+  postShare,
   getAllFollow,
   getUsersFiltered,
   getFollow,
