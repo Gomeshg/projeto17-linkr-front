@@ -4,16 +4,18 @@ import { getLinksFilteredByHashtag } from "../../services/linkr";
 
 import Header from "../common/Header";
 import TimelineLinks from "../common/TimelineLinks";
-import trendings from "../common/Trendings";
 import { useParams } from "react-router-dom";
 import Trendings from "../common/Trendings";
 
 export default function Hashtag() {
   const [links, setLinks] = useState(null);
   const { hashtag } = useParams();
+  const token = JSON.parse(localStorage.getItem("linkr"));
+
+  console.log(hashtag);
 
   useEffect(() => {
-    getLinksFilteredByHashtag(hashtag)
+    getLinksFilteredByHashtag(hashtag, token.token)
       .then((res) => {
         setLinks(res.data);
       })
@@ -34,7 +36,11 @@ export default function Hashtag() {
         <Posts>
           {links !== null
             ? links.map((link, index) => (
-                <TimelineLinks key={index} links={link} />
+                <TimelineLinks
+                  key={index}
+                  links={link}
+                  boolean={link.boolean ? link.boolean : false}
+                />
               ))
             : "Loading..."}
         </Posts>

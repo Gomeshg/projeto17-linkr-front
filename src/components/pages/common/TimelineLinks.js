@@ -6,28 +6,43 @@ import { SlBubbles } from "react-icons/sl";
 import mql from "@microlink/mql";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
-import { postDisLike, postLike, deleteLink, updateLink, getCommentsCount , postShare } from "../../services/linkr";
+import {
+  postDisLike,
+  postLike,
+  deleteLink,
+  updateLink,
+  getCommentsCount,
+  postShare,
+} from "../../services/linkr";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import CommentsBox from "./CommentsBox";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  insert_style_in_hashtags,
+  getHashtags,
+} from "../../services/functions";
+import parse from "html-react-parser";
 
 export default function TimelineLinks(links) {
   const { user, setUser } = useContext(UserContext);
-  const [all, setAll] = useState({shares:false});
+  const [all, setAll] = useState({ shares: false });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Metadata
   const [metadata, setMetadata] = useState({});
 
   // Delete
   const [deleteLinkScreen, setDeleteLinkScreen] = useState(
-   "whiteBackground hidden"
+    "whiteBackground hidden"
   );
 
   // Edit
   const [editBoolean, setEditBoolean] = useState(true);
+  const hashtags = getHashtags(links.links.text);
+  const text = insert_style_in_hashtags(links.links.text, hashtags);
+  console.log(text);
   const [newText, setNewText] = useState(links.links.text);
 
   const [likes, setLikes] = useState({});
@@ -46,23 +61,30 @@ export default function TimelineLinks(links) {
     setMetadata(data);
   }
   useEffect(() => {
-     
     getMetadata();
   }, []);
 
   useEffect(() => {
-    if(token)setUser({...token})
-    getMetadata()
-    tippiString()
-    share(false)
-
+    if (token) setUser({ ...token });
+    getMetadata();
+    tippiString();
+    share(false);
   }, []);
 
-
   function tippiString(sum) {
-    name = likes.list ? likes.list.filter((value) =>{ return value !== links.links.userName}) : links.links.likeUser.filter((value) => {{return value !== links.links.userName}});
-   
-    tippName = !name[1] ? name[0]+" and other x peoples":name[0]+ " , " +name[1]+ " and other x peoples";
+    name = likes.list
+      ? likes.list.filter((value) => {
+          return value !== links.links.userName;
+        })
+      : links.links.likeUser.filter((value) => {
+          {
+            return value !== links.links.userName;
+          }
+        });
+
+    tippName = !name[1]
+      ? name[0] + " and other x peoples"
+      : name[0] + " , " + name[1] + " and other x peoples";
     if (name.length === 1) {
       tippName = name.join(" e ") + " like this";
     }
@@ -77,13 +99,13 @@ export default function TimelineLinks(links) {
         : links.links.likeUser.filter(
             (value, i) => value !== links.links.userName && i < 2
           );
-      tippName = "You , " + name[0] +" , "+ name[1]+ " and other x peoples";
+      tippName = "You , " + name[0] + " , " + name[1] + " and other x peoples";
 
       if (name.length === 0) {
         tippName = "You liked";
       }
       if (name.length === 1) {
-      tippName = "You , " + name[0] + " liked";
+        tippName = "You , " + name[0] + " liked";
       }
     }
     setLikes({
@@ -95,7 +117,6 @@ export default function TimelineLinks(links) {
     });
   }
   function like() {
-
     postLike(
       {
         id: links.links.id,
@@ -105,7 +126,6 @@ export default function TimelineLinks(links) {
     tippiString(likes.cont + 1);
   }
   function dislike() {
-
     postDisLike(
       {
         linkId: links.links.id,
@@ -137,66 +157,74 @@ export default function TimelineLinks(links) {
 
   //Logica pra Editar um Link---------------------
   useEffect(() => {
-      const keyDownHandler = event => {
-        console.log('User pressed: ', event.key);
-        if (event.key === 'Escape') {
-          event.preventDefault();
-          setNewText(links.links.text);
-          setEditBoolean(true);
-        }
-      };
-      return () => {
-        document.removeEventListener('keydown', keyDownHandler);
-      };
-    }, []);
+    const keyDownHandler = (event) => {
+      console.log("User pressed: ", event.key);
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setNewText(links.links.text);
+        setEditBoolean(true);
+      }
+    };
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
 
   async function editText(e) {
     const postAuth = { headers: { Authorization: "Bearer " + token.token } };
     const linkId = links.links.id;
     const textEdited = {
-      text: newText
+      text: newText,
     };
-    
+
     if (e.key === "Enter") {
       e.preventDefault();
       setLoading(false);
 
-      await updateLink(textEdited, linkId, postAuth).then(() => {
-        setLoading(true);
-        setEditBoolean(true);
-      }).catch((err) => {
-        setLoading(true);
-        alert("Houve um erro ao editar seu link");
-      });
+      await updateLink(textEdited, linkId, postAuth)
+        .then(() => {
+          setLoading(true);
+          setEditBoolean(true);
+        })
+        .catch((err) => {
+          setLoading(true);
+          alert("Houve um erro ao editar seu link");
+        });
     }
   }
 
   //Logica pra contar os comentarios -------------------------------
   useEffect(() => {
-    getCommentsCount(links.links.id).then((res) => {
-      setCommentCount(res.data[0].comments)
-    }).catch();
+    getCommentsCount(links.links.id)
+      .then((res) => {
+        setCommentCount(res.data[0].comments);
+      })
+      .catch();
   }, [commentCount]);
 
-
-//Logica pra contar os repost -------------------------------
-  function share(boolean){
-
-
-    const link = {...links.links}
+  //Logica pra contar os repost -------------------------------
+  function share(boolean) {
+    const link = { ...links.links };
 
     postShare(
       token.token,
-      boolean ? {linkId: 0, userId: 0 } : {linkId: link.id, userId: link.userId}
-    ).then((i)=> {
-      console.log(i.data.cont)
-      setAll({...all, sharesCount: i.data.cont})
-      closeDeleteScreen()
-      links.reloading()
-    }).catch(()=>{closeDeleteScreen();console.log("olaaa")})
+      boolean
+        ? { linkId: 0, userId: 0 }
+        : { linkId: link.id, userId: link.userId }
+    )
+      .then((i) => {
+        console.log(i.data.cont);
+        setAll({ ...all, sharesCount: i.data.cont });
+        closeDeleteScreen();
+        links.reloading();
+      })
+      .catch(() => {
+        closeDeleteScreen();
+        console.log("olaaa");
+      });
   }
 
-  console.log(links)
+  console.log(links);
 
   return (
     <>
@@ -209,14 +237,19 @@ export default function TimelineLinks(links) {
           ) : (
             <div className="deleteBox">
               <h1 className="title">
-                {all.shares? "Do you want to share this link" :"Are you sure you want to delete this post?"}
+                {all.shares
+                  ? "Do you want to share this link"
+                  : "Are you sure you want to delete this post?"}
               </h1>
               <div className="buttons">
                 <button className="button white" onClick={closeDeleteScreen}>
                   No, go back
                 </button>
-                <button className="button blue" onClick={all.shares ? ()=>share(false) : deleteThisLink}>
-                {all.shares? "yes share" :"Yes, delete it"}
+                <button
+                  className="button blue"
+                  onClick={all.shares ? () => share(false) : deleteThisLink}
+                >
+                  {all.shares ? "yes share" : "Yes, delete it"}
                 </button>
               </div>
             </div>
@@ -243,31 +276,44 @@ export default function TimelineLinks(links) {
               {likes.list ? likes.cont : links.links.likes} likes
             </h3>
           </Tippy>
-          <SlBubbles className="icon" onClick={() => setCommentBoolean(!commentBoolean)} />
-          <h3 className="likes">
-            {commentCount} comments
-          </h3>
+          <SlBubbles
+            className="icon"
+            onClick={() => setCommentBoolean(!commentBoolean)}
+          />
+          <h3 className="likes">{commentCount} comments</h3>
 
-          <AiOutlineShareAlt className="icon" onClick={()=>{openDeleteScreen() ; setAll({...all, shares:true })}} />
-          <h3 className="likes">
-            {all.sharesCount} shares
-          </h3>
-
+          <AiOutlineShareAlt
+            className="icon"
+            onClick={() => {
+              openDeleteScreen();
+              setAll({ ...all, shares: true });
+            }}
+          />
+          <h3 className="likes">{all.sharesCount} shares</h3>
         </div>
         <div>
           <div className="nameNIcons">
-            <h2 className="username" onClick={() => navigate(`/user/${links.links.userId}`)}>{links.links.userName}</h2>
+            <h2
+              className="username"
+              onClick={() => navigate(`/user/${links.links.userId}`)}
+            >
+              {links.links.userName}
+            </h2>
             {links.links.userName === user.userName ? (
               <div>
-                <BsPencilSquare className="miniIcon" onClick={() => setEditBoolean(!editBoolean)} />
+                <BsPencilSquare
+                  className="miniIcon"
+                  onClick={() => setEditBoolean(!editBoolean)}
+                />
                 <BiTrash className="miniIcon" onClick={openDeleteScreen} />
               </div>
             ) : (
               ""
             )}
           </div>
-          {editBoolean ? <h3>{newText}</h3>
-            : 
+          {editBoolean ? (
+            <div>{parse(text)}</div>
+          ) : (
             <form>
               <textarea
                 autoFocus
@@ -276,10 +322,11 @@ export default function TimelineLinks(links) {
                 placeholder="http://..."
                 type="text"
                 value={newText}
-                onChange={e => setNewText(e.target.value)}
-                disabled={(loading) ? "" : "disabled"}
+                onChange={(e) => setNewText(e.target.value)}
+                disabled={loading ? "" : "disabled"}
               />
-            </form>}
+            </form>
+          )}
           <a
             href={links.links.url}
             target="_blank"
@@ -294,12 +341,18 @@ export default function TimelineLinks(links) {
             <img src={metadata.image?.url} alt="" className="metadataImage" />
           </a>
         </div>
-        
       </TimelineLinksStyle>
-      {commentBoolean ? ""
-        : <CommentsBox linkId={links.links.id} linkUserName={links.links.userName} commentCount={setCommentCount} setCommentCount={setCommentCount} />}
+      {commentBoolean ? (
+        ""
+      ) : (
+        <CommentsBox
+          linkId={links.links.id}
+          linkUserName={links.links.userName}
+          commentCount={setCommentCount}
+          setCommentCount={setCommentCount}
+        />
+      )}
     </>
-    
   );
 }
 const TimelineLinksStyle = styled.div`
@@ -312,6 +365,16 @@ const TimelineLinksStyle = styled.div`
   padding: 15px;
   word-wrap: break-word;
   overflow: auto;
+
+  a {
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  a:hover {
+    color: rgb(180, 180, 180);
+  }
   .whiteBackground {
     display: flex;
     justify-content: center;
