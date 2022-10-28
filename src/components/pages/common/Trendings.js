@@ -26,9 +26,12 @@ export default function Trendings() {
       <section>
         {trendings !== null
           ? trendings.map((item, index) => (
-              <Link to={`/hashtag/${item.tag}`}>
+              // <Link to={`/hashtag/${item.tag}`}>
+              //   <Hashtag key={index}># {item.tag}</Hashtag>
+              // </Link>
+              <a href={`/hashtag/${item.tag}`}>
                 <Hashtag key={index}># {item.tag}</Hashtag>
-              </Link>
+              </a>
             ))
           : ""}
       </section>
@@ -59,7 +62,13 @@ const Screen = styled.div`
   }
 
   a {
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
     text-decoration: none;
+  }
+  a:hover {
+    color: rgb(180, 180, 180);
   }
 `;
 

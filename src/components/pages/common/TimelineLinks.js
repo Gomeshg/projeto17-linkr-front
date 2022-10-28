@@ -16,7 +16,7 @@ import {
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import CommentsBox from "./CommentsBox";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   insert_style_in_hashtags,
   getHashtags,
@@ -39,7 +39,8 @@ export default function TimelineLinks(links, boolean) {
   const [editBoolean, setEditBoolean] = useState(true);
   const hashtags = getHashtags(links.links.text);
   const text = insert_style_in_hashtags(links.links.text, hashtags);
-  const [newText, setNewText] = useState(text);
+  console.log(text);
+  const [newText, setNewText] = useState(links.links.text);
 
   const [likes, setLikes] = useState({});
   const [loading, setLoading] = useState(true);
@@ -269,7 +270,7 @@ export default function TimelineLinks(links, boolean) {
             )}
           </div>
           {editBoolean ? (
-            <div>{parse(newText)}</div>
+            <div>{parse(text)}</div>
           ) : (
             <form>
               <textarea
