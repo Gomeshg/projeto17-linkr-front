@@ -4,9 +4,8 @@ import { SlArrowDown, SlArrowUp } from 'react-icons/sl';
 import { useState, useContext } from "react";
 import UserContext from "../../../parts/UserContext";
 import { AiOutlineSearch } from 'react-icons/ai';
-import axios from "axios";
-
 import RenderUserSearched from "./RenderUserSearched";
+import { getUsersFiltered } from "../../services/linkr";
 
 
 
@@ -17,6 +16,8 @@ export default function Header() {
     const [usersFiltered, setUsersFiltered] = useState([]);
 
     const navigat = useNavigate()
+
+    const token = JSON.parse(localStorage.getItem('linkr'));
 
     function logout() {
         localStorage.clear('linkr')
@@ -29,15 +30,15 @@ export default function Header() {
         setboolean(!boolean)
     }
 
-    async function getUsersFiltered(usernameSearched){
+    async function renderUsersFiltered(usernameSearched){
 
         const body = {partOfUsername:usernameSearched};
 
         try {
-            const res = await axios.get(`http://localhost:4000/users/search/${usernameSearched}`);
+            const res = await getUsersFiltered(token.token,usernameSearched)
+
             setUsersFiltered(res.data)
         } catch(err) {
-            console.error(err);
             alert("Erro ao carregar! Consulte os logs.")
         }
     }
@@ -48,7 +49,7 @@ export default function Header() {
 
         if (usernameSearched.length>=3){
             setOpenSearchResults(true);
-            getUsersFiltered(usernameSearched);
+            renderUsersFiltered(usernameSearched);
         } else {
             setOpenSearchResults(false);
             setUsersFiltered([])
@@ -56,10 +57,11 @@ export default function Header() {
 
     }
 
+
     function goToTimeline(){
         navigat('/');
     }
-
+    console.log(user)
     return (
         openSearchResults ? 
         <HeaderStyle boolean={boolean} >
@@ -74,7 +76,7 @@ export default function Header() {
             <span onClick={upDow}>
                 <div className="minBox">
                     {boolean ? <SlArrowUp className="icon" /> : <SlArrowDown className="icon" />}
-                    <img src={user.pictureUrl} alt="idoso nervoso" className="profileIcon" ></img>
+                    <img src={user.pictureUrl} className="profileIcon" />
                     {boolean ? <div className={"scritBox"} onClick={()=>logout()} >
                         logout
                     </div> : ''}

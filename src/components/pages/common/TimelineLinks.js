@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, AiOutlineShareAlt } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { BsPencilSquare } from "react-icons/bs";
 import { SlBubbles } from "react-icons/sl";
@@ -12,6 +12,7 @@ import {
   deleteLink,
   updateLink,
   getCommentsCount,
+  postShare,
 } from "../../services/linkr";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
@@ -23,8 +24,10 @@ import {
 } from "../../services/functions";
 import parse from "html-react-parser";
 
-export default function TimelineLinks(links, boolean) {
+export default function TimelineLinks(links) {
   const { user, setUser } = useContext(UserContext);
+  const [all, setAll] = useState({ shares: false });
+
   const navigate = useNavigate();
 
   // Metadata
@@ -62,8 +65,10 @@ export default function TimelineLinks(links, boolean) {
   }, []);
 
   useEffect(() => {
+    if (token) setUser({ ...token });
     getMetadata();
     tippiString();
+    share(false);
   }, []);
 
   function tippiString(sum) {
@@ -160,7 +165,6 @@ export default function TimelineLinks(links, boolean) {
         setEditBoolean(true);
       }
     };
-    document.addEventListener("keydown", keyDownHandler);
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     };
@@ -198,6 +202,30 @@ export default function TimelineLinks(links, boolean) {
       .catch();
   }, [commentCount]);
 
+  //Logica pra contar os repost -------------------------------
+  function share(boolean) {
+    const link = { ...links.links };
+
+    postShare(
+      token.token,
+      boolean
+        ? { linkId: 0, userId: 0 }
+        : { linkId: link.id, userId: link.userId }
+    )
+      .then((i) => {
+        console.log(i.data.cont);
+        setAll({ ...all, sharesCount: i.data.cont });
+        closeDeleteScreen();
+        links.reloading();
+      })
+      .catch(() => {
+        closeDeleteScreen();
+        console.log("olaaa");
+      });
+  }
+
+  console.log(links);
+
   return (
     <>
       <TimelineLinksStyle>
@@ -209,14 +237,19 @@ export default function TimelineLinks(links, boolean) {
           ) : (
             <div className="deleteBox">
               <h1 className="title">
-                Are you sure you want to delete this post?
+                {all.shares
+                  ? "Do you want to share this link"
+                  : "Are you sure you want to delete this post?"}
               </h1>
               <div className="buttons">
                 <button className="button white" onClick={closeDeleteScreen}>
                   No, go back
                 </button>
-                <button className="button blue" onClick={deleteThisLink}>
-                  Yes, delete it
+                <button
+                  className="button blue"
+                  onClick={all.shares ? () => share(false) : deleteThisLink}
+                >
+                  {all.shares ? "yes share" : "Yes, delete it"}
                 </button>
               </div>
             </div>
@@ -248,6 +281,15 @@ export default function TimelineLinks(links, boolean) {
             onClick={() => setCommentBoolean(!commentBoolean)}
           />
           <h3 className="likes">{commentCount} comments</h3>
+
+          <AiOutlineShareAlt
+            className="icon"
+            onClick={() => {
+              openDeleteScreen();
+              setAll({ ...all, shares: true });
+            }}
+          />
+          <h3 className="likes">{all.sharesCount} shares</h3>
         </div>
         <div>
           <div className="nameNIcons">
