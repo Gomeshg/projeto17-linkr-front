@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 export default function RenderUserSearched({ usersFiltered }) {
-
+  console.log(usersFiltered)
   function accessUserPage(id) {
     navigate(`/user/${id}`);
     window.location.reload();

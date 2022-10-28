@@ -5,6 +5,7 @@ import { SlPaperPlane } from 'react-icons/sl'
 import { getComments, postComment } from "../../services/linkr";
 import Comment from "./Comment";
 
+
 export default function({linkId, linkUserName, commentCount, setCommentCount}) {
     const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(true);
@@ -19,9 +20,9 @@ export default function({linkId, linkUserName, commentCount, setCommentCount}) {
                 "An error occured while trying to fetch the comments, please refresh the page"
               );
         })
-    }, [allComments]);
+    }, []);
 
-    function shareComment(e) {
+    async function shareComment(e) {
         e.preventDefault();
         const token = JSON.parse(localStorage.getItem('linkr'));
         const postAuth = { headers: { "Authorization": "Bearer " + token.token} };
