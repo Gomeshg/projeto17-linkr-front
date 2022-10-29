@@ -36,7 +36,7 @@ export default function Enter() {
         localStorage.setItem('linkr', JSON.stringify(value.data));
         setUser({...user, ...value.data});
         console.log(value , " OLS")
-        getUserValidation(value.data.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') }).catch(err)
+        getUserValidation(value.data.token).then((value) => { setUser({ ...user, ...value.data }); navigat('/timeline') }).catch(()=>{localStorage.clear('linkr') ; navigat('/')})
 
     }
     function err(value) {

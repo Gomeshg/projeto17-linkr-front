@@ -30,13 +30,14 @@ export default function Timeline() {
       }).catch(() => {
         alert("An error occured while trying to fetch the posts, please refresh the page")
       })
-      getAllFollow( token.token, user.id).then(({data})=>{
-         data.length>0 || links.length>0 ? setLoading(false):setLoading(true)
+      
+      getAllFollow( token.token, user.id).then((value)=>{
+        value.data.length>0 || links.length>0 ? setLoading(false):setLoading(true)
       } ).catch(e=> console.error(e))
 
     }, 1500)
 
-    async function reloading(){
+    function reloading(){
         getLink(token.token).then((res) => {
         setLoading(res.data.lenght===0 ? true: false);
         setLinks(res.data);
@@ -46,6 +47,7 @@ export default function Timeline() {
 }
      useEffect(() => {
        reloading()
+       setUser({...user,reloading})
       }, []);
 
 
@@ -65,8 +67,8 @@ export default function Timeline() {
                     
                     {(loading) ? <h3 className="noLinks">You don't follow anyone yet. Search for new friends!</h3>
                         : [ links.length === 0 ? <h3 className="noLinks">No posts found from your friends</h3>
-                            : links.map((links) => (
-                                <TimelineLinks links={links} reloading={reloading} boolean={links.boolean ? links.boolean: false } />
+                            : links.map((links, index) => (
+                                <TimelineLinks key={index} links={links} reloading={reloading} boolean={links.boolean ? links.boolean: false } />
                             ))
                         ]
                     }

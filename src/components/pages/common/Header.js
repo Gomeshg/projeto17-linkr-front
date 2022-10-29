@@ -61,7 +61,6 @@ export default function Header() {
     function goToTimeline(){
         navigat('/');
     }
-    console.log(user)
     return (
         openSearchResults ? 
         <HeaderStyle boolean={boolean} >
