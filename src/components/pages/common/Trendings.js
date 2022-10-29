@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getTrending } from "../../services/linkr";
-// import ReactHashtag from "@mdnm/react-hashtag";
 
 export default function Trendings() {
   const [trendings, setTrendings] = useState(null);
+  const token = JSON.parse(localStorage.getItem("linkr"));
+
   useEffect(() => {
-    getTrending()
+    getTrending(token.token)
       .then((res) => {
         setTrendings(res.data);
       })
@@ -25,10 +26,12 @@ export default function Trendings() {
       <section>
         {trendings !== null
           ? trendings.map((item, index) => (
-              <Link to={`/hashtag/${item.tag}`}>
-                {/* <ReactHashtag>{`#${item.tag}`}</ReactHashtag> */}
+              // <Link to={`/hashtag/${item.tag}`}>
+              //   <Hashtag key={index}># {item.tag}</Hashtag>
+              // </Link>
+              <a href={`/hashtag/${item.tag}`}>
                 <Hashtag key={index}># {item.tag}</Hashtag>
-              </Link>
+              </a>
             ))
           : ""}
       </section>
@@ -59,14 +62,12 @@ const Screen = styled.div`
   }
 
   a {
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
     text-decoration: none;
   }
-
-  span {
-    color: rgb(255, 255, 255);
-    font-weight: 700;
-  }
-  span:hover {
+  a:hover {
     color: rgb(180, 180, 180);
   }
 `;
@@ -81,7 +82,9 @@ const Title = styled.p`
 const Hashtag = styled.p`
   font-size: 15px;
   color: rgb(255, 255, 255);
-  font-weight: 400;
-
   font-family: sans-serif;
+
+  :hover {
+    color: rgb(180, 180, 180);
+  }
 `;
