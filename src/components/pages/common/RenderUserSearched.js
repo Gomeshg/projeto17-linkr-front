@@ -10,8 +10,6 @@ export default function RenderUserSearched({ usersFiltered }) {
 
   const navigate = useNavigate();
 
-  console.log(usersFiltered[0])
-
   return usersFiltered.length === 0 ? (
     <UserNotListed>
       <h2>No users found</h2>

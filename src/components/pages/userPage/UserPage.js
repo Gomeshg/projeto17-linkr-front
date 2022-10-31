@@ -45,7 +45,6 @@ export default function UserPage(){
 
         getUserName(token.token, id)
         .then((res) => {
-            console.log(res.data)
             setUsername(res.data[0])
         })
         .catch(() => {
@@ -57,7 +56,6 @@ export default function UserPage(){
 
       }, []);
 function followers(){
-  console.log(follow)
     if(follow.boton){
         setFollow({...follow,boton:!follow.follower})
         postFollow(token.token, id).then(()=>setFollow({boton:true, follower:!follow.follower})).catch(()=>{setFollow({boton:true, follower:!follow.follower});alert("Could not follow this user")})

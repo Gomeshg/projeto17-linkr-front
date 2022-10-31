@@ -42,7 +42,6 @@ export default function TimelineLinks(links) {
   const [editBoolean, setEditBoolean] = useState(true);
   const hashtags = getHashtags(links.links.text);
   const text = insert_style_in_hashtags(links.links.text, hashtags);
-  console.log(text);
   const [newText, setNewText] = useState(links.links.text);
 
   const [likes, setLikes] = useState({});
@@ -68,7 +67,7 @@ export default function TimelineLinks(links) {
     if (token) setUser({ ...token });
     getMetadata();
     tippiString();
-    share(false);
+    share();
   }, []);
 
   function tippiString(sum) {
@@ -203,29 +202,30 @@ export default function TimelineLinks(links) {
   }, [commentCount]);
 
   //Logica pra contar os repost -------------------------------
-  function share(boolean) {
+
+function env(){
+  setAll({...all, shares:!all.shares})
+  share()
+}
+
+  function share() {
 
     const link = { ...links.links }
-    
     postShare(
-      token.token,
-      boolean
-        ? { linkId: 0, userId: 0 }
-        : { linkId: link.id, userId: link.userId }
-    )
-      .then((i) => {
-        console.log(i.data.cont);
-        setAll({ ...all, sharesCount: i.data.cont });
-        closeDeleteScreen();
-        links.reloading();
-      })
-      .catch(() => {
-        closeDeleteScreen();
-        console.log("olaaa");
-      });
-  }
+       token.token,
+        !all.shares ? {linkId: 0, userId: 0 }:
+        { linkId: link.id, userId: link.userId }
 
-  console.log(links);
+      ).then((i) => {
+         setAll({ ...all, sharesCount: i.data.cont });
+         closeDeleteScreen();
+         links.reloading();
+       }).catch(() => {
+         closeDeleteScreen();
+       });
+       setAll({...all, shares:!all.shares})
+
+  }
 
   return (
     <>
@@ -248,7 +248,7 @@ export default function TimelineLinks(links) {
                 </button>
                 <button
                   className="button blue"
-                  onClick={all.shares ? () => share(false) : deleteThisLink}
+                  onClick={all.shares ? env : deleteThisLink}
                 >
                   {all.shares ? "yes share" : "Yes, delete it"}
                 </button>

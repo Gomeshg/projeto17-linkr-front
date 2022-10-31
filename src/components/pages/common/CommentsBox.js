@@ -34,7 +34,6 @@ export default function({linkId, linkUserName, commentCount, setCommentCount}) {
                 userId: userId,
                 comment: comment
             }
-            console.log(commentObj);
             postComment(commentObj, postAuth).then(() => {
                 setCommentCount(commentCount + 1);
             }).catch((error) => {
