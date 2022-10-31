@@ -120,13 +120,11 @@ const LinkShareStyle = styled.div`
   border-radius: 16px;
   color: #707070;
   word-break: break-all;
-
   width: 600px;
   height: 200px;
   background-color: #ffffff;
   margin-bottom: 13px;
   padding: 15px;
-
   display: flex;
   margin-top: 16px;
   @media screen and (max-width: 900px) {
@@ -152,12 +150,10 @@ const LinkShareStyle = styled.div`
     border-radius: 5px;
     background: #efefef;
     margin: 5px 0 5px 0;
-
     font-family: "Lato", sans-serif;
     font-weight: 300;
     font-size: 15px;
     padding: 5px 15px 5px 15px;
-
     ::-webkit-input-placeholder {
       /* WebKit, Blink, Edge */
       color: #949494;
@@ -180,7 +176,6 @@ const LinkShareStyle = styled.div`
       /* Microsoft Edge */
       color: #949494;
     }
-
     ::placeholder {
       /* Most modern browsers support this now. */
       color: #949494;
@@ -196,7 +191,6 @@ const LinkShareStyle = styled.div`
     border-radius: 5px;
     margin-left: 385px;
     background-color: #1877f2;
-
     font-family: "Lato", sans-serif;
     font-weight: 700;
     font-size: 15px;
