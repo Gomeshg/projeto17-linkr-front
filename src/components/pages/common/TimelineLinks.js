@@ -213,7 +213,7 @@ function env(){
     const link = { ...links.links }
     postShare(
        token.token,
-        !all.shares ? {linkId: 0, userId: 0 }:
+        !all.shares ? {linkId: link.id, userId: 0 }:
         { linkId: link.id, userId: link.userId }
 
       ).then((i) => {
