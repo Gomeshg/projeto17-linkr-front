@@ -12,8 +12,6 @@ export default function Hashtag() {
   const { hashtag } = useParams();
   const token = JSON.parse(localStorage.getItem("linkr"));
 
-  console.log(hashtag);
-
   useEffect(() => {
     getLinksFilteredByHashtag(hashtag, token.token)
       .then((res) => {

@@ -81,7 +81,7 @@ export default function LinkShare() {
           className="profileIcon"
         ></img>
       </div>
-      <div>
+      <div className={"allPost"}>
         <h2 className="shareTitle">What are you going to share today?</h2>
         <form onSubmit={postUrl} id="myForm">
           <input
@@ -127,9 +127,7 @@ const LinkShareStyle = styled.div`
   padding: 15px;
   display: flex;
   margin-top: 16px;
-  @media screen and (max-width: 900px) {
-    width: 100%;
-  }
+  
   .profileIcon {
     height: 50px;
     width: 50px;
@@ -195,5 +193,29 @@ const LinkShareStyle = styled.div`
     font-weight: 700;
     font-size: 15px;
     color: #ffffff;
+  }
+  @media (max-width: 1000px) {
+    width: 100% ;
+    border-radius: 0px;
+      .allPost, .inputBar, .shareTitle{
+        width: 100% ;
+        
+      }
+      .shareTitle{
+        text-align: center;
+      }
+     
+      form{
+        display: flex ;
+        flex-wrap: wrap ;
+        justify-content: flex-end ;
+      }
+      .button{
+        width: 200px ;
+      }
+      img{
+        display: none ;
+      }
+      
   }
 `;

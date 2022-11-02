@@ -59,7 +59,7 @@ export default function Header() {
 
 
     function goToTimeline(){
-        navigat('/');
+        navigat('/timeline');
     }
     return (
         openSearchResults ? 
@@ -170,6 +170,7 @@ span {
     color: #ffffff;
     margin: 15px;
 }
+
 `
 
 const Searchbar = styled.div`
@@ -200,6 +201,12 @@ const Searchbar = styled.div`
         position: absolute;
         right: 10px;
     }
+
+    @media (max-width: 1000px) {
+            display: none ;
+        
+    }
+  
 
 `
 

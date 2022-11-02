@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:4000";
-//const BASE_URL = "https://linkr001.herokuapp.com";
+//const BASE_URL = "http://localhost:4000";
+const BASE_URL = "https://linkrs.herokuapp.com";
+
 
 function postLink(link, postAuth) {
   const promise = axios.post(`${BASE_URL}/timeline`, link, postAuth);
@@ -164,7 +165,16 @@ function postShare(token, body) {
   return promise;
 }
 
+function deletShare(token,id) {
+  const header = { headers: { Authorization: `Bearer ${token}` } };
+  const promise = axios.delete(`${BASE_URL}/shares/${id}`, header);
+  return promise;
+}
+
+
+
 export {
+  deletShare,
   postShare,
   getAllFollow,
   getUsersFiltered,

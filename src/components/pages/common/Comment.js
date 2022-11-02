@@ -11,9 +11,7 @@ export default function Comment(commentObj) {
                     <span className="authorName">{userName}</span>
                     {(userName === commentObj.linkUserName) ? <span className="authorClass"> • Post`s author</span>
                         : ""}
-                    {/* {(followerUserName === commentObj.linkUserName) ? <span className="authorClass"> • Follower</span>
-                        : ""} */}
-                    <h3 className="authorComment">{comment}</h3>
+                        <h3 className="authorComment">{comment}</h3>
                 </div>
             </div>
             <span className="separationBar"/>

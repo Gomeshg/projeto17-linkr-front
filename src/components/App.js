@@ -17,9 +17,7 @@ export default function App() {
   const [user, setUser] = useState([]);
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("linkr"));
-    console.log(user.userName, token);
-
-    if (user.userName || token)
+    if (token)
       getUserValidation(token.token).then((value) => {
         setUser({ ...user, ...value.data, ...token });
       });
@@ -53,4 +51,6 @@ const Wrapper = styled.div`
   position: sticky;
   top: 0;
   overflow: auto;
+
+  
 `;
