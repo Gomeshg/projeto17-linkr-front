@@ -1,11 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-/* Rules to specify families:
-font-family: 'Lato', sans-serif;
-font-family: 'Oswald', sans-serif;
-font-family: 'Passion One', cursive;
- */
+
 .pageTitle {
     width: 925px;
     height: 160px;
@@ -19,6 +15,10 @@ font-family: 'Passion One', cursive;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    
+}
+textarea{
+    resize: none ;
 }
 .timelineBody {
     display: flex;
@@ -32,6 +32,16 @@ font-family: 'Passion One', cursive;
     position: relative;
     padding-right: 25px;
 }
+
+@media (max-width: 1000px) {
+        width: 100% ;
+        .pageTitle {
+            width: 100% ;
+            padding-left: 20px;
+        }
+        
+  }
+
 `;
 
 export default GlobalStyle;

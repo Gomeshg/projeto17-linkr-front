@@ -13,7 +13,6 @@ export default function Enter() {
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("linkr"));
-    console.log(token);
     if (token)
       getUserValidation(token.token).then((value) => {
         setUser({ ...user, ...value.data });
@@ -29,16 +28,12 @@ export default function Enter() {
       email: loginDate.email,
       password: loginDate.password,
     };
-    console.log(obj, " OLS");
 
     postLogin(obj).catch(err).then(sucess);
   }
   function sucess(value) {
-    console.log("TESTANDO VALUE:");
-    console.log(value);
     localStorage.setItem("linkr", JSON.stringify(value.data));
     setUser(value.data);
-    console.log(value, " OLS");
     getUserValidation(value.data.token)
       .then((value) => {
         setUser({ ...user, ...value.data });
@@ -47,7 +42,6 @@ export default function Enter() {
       .catch(err);
   }
   function err(value) {
-    console.log(value, " OLS");
 
     setBoolean(boolean);
     return alert(value.response.statusText);

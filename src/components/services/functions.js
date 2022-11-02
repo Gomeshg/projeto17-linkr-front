@@ -8,7 +8,7 @@ export function getHashtags(text) {
   let hashtags = [];
 
   const text_in_caracteres = [];
-  for (let i = 0; i < text.length; i++) {
+  for (let i = 0; i < text.length ? text.length: 0 ; i++) {
     text_in_caracteres.push(text[i]);
   }
 
